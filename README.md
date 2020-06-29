@@ -1,5 +1,4 @@
-bindl
-=====
+# bindl
 
 Download and extract binaries from compressed packages
 
@@ -9,11 +8,15 @@ Download and extract binaries from compressed packages
 [![License](https://img.shields.io/npm/l/bindl.svg)](https://github.com/felipecassiors/bindl/blob/master/package.json)
 
 <!-- toc -->
-* [Usage](#usage)
-* [Commands](#commands)
+
+- [Usage](#usage)
+- [Commands](#commands)
 <!-- tocstop -->
+
 # Usage
+
 <!-- usage -->
+
 ```sh-session
 $ npm install -g bindl
 $ bindl COMMAND
@@ -25,8 +28,11 @@ USAGE
   $ bindl COMMAND
 ...
 ```
+
 <!-- usagestop -->
+
 # Commands
+
 <!-- commands -->
 
 <!-- commandsstop -->
