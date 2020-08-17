@@ -1,4 +1,5 @@
 import { Command, flags } from "@oclif/command";
+import { cosmiconfig } from "cosmiconfig";
 
 class Bindl extends Command {
   static description = "describe the command here";
@@ -15,8 +16,21 @@ class Bindl extends Command {
   async run() {
     const { flags } = this.parse(Bindl);
 
-    const config = flags.config ?? "cosmic-config";
-    this.log(`config file passed as ${config}`);
+    const explorer = cosmiconfig(this.config.name);
+
+    let result;
+    if (flags.config) {
+      try {
+        result = await explorer.load(flags.config);
+      } catch (error) {}
+    } else {
+      result = await explorer.search();
+    }
+
+    if (!result) {
+      this.error("I was not able to load the configuration file.");
+    }
+    this.log(`config file passed as ${result.filepath}`);
   }
 }
 
