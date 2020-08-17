@@ -2,7 +2,7 @@
   "extends": [
     "oclif",
     "oclif-typescript",
+    "prettier",
     "prettier/@typescript-eslint",
-    "plugin:prettier/recommended"
   ]
 }

@@ -8,27 +8,25 @@ Download and extract binaries from compressed packages
 [![License](https://img.shields.io/npm/l/bindl.svg)](https://github.com/felipecassiors/bindl/blob/master/package.json)
 
 <!-- toc -->
-
-- [Usage](#usage)
-- [Commands](#commands)
+* [bindl](#bindl)
+* [Usage](#usage)
+* [Commands](#commands)
 <!-- tocstop -->
 
 # Usage
 
 <!-- usage -->
-
 ```sh-session
 $ npm install -g bindl
 $ bindl COMMAND
 running command...
 $ bindl (-v|--version|version)
-bindl/0.1.0 linux-x64 node-v12.18.1
+bindl/0.1.0 linux-x64 node-v12.18.3
 $ bindl --help [COMMAND]
 USAGE
   $ bindl COMMAND
 ...
 ```
-
 <!-- usagestop -->
 
 # Commands
