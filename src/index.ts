@@ -1,5 +1,7 @@
 import { Command, flags } from "@oclif/command";
 import { cosmiconfig } from "cosmiconfig";
+import axios from "axios";
+import * as fs from "fs";
 
 class Bindl extends Command {
   static description = "describe the command here";
@@ -31,6 +33,14 @@ class Bindl extends Command {
       this.error("I was not able to load the configuration file.");
     }
     this.log(`config file passed as ${result.filepath}`);
+
+    const url = result.config.linux.x64.url;
+    const response = await axios({
+      url,
+      method: "GET",
+      responseType: "stream",
+    });
+    response.data.pipe(fs.createWriteStream(url.split("/").pop()));
   }
 }
 
