@@ -1,8 +1,7 @@
 import { Command, flags } from "@oclif/command";
 import { cosmiconfig } from "cosmiconfig";
-import axios from "axios";
-import * as fs from "fs";
-
+import * as download from "download";
+const decompressTarxz = require("decompress-tarxz");
 class Bindl extends Command {
   static description = "describe the command here";
 
@@ -35,12 +34,12 @@ class Bindl extends Command {
     this.log(`config file passed as ${result.filepath}`);
 
     const url = result.config.linux.x64.url;
-    const response = await axios({
-      url,
-      method: "GET",
-      responseType: "stream",
+    const files_to_extract = result.config.linux.x64.extract;
+    await download(url, "binaries", {
+      extract: true,
+      filter: (file) => file.path === files_to_extract,
+      plugins: [decompressTarxz()],
     });
-    response.data.pipe(fs.createWriteStream(url.split("/").pop()));
   }
 }
 
