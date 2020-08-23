@@ -1,16 +1,24 @@
 import { Command, flags } from "@oclif/command";
 import { cosmiconfig } from "cosmiconfig";
 import * as download from "download";
-const decompressTarxz = require("decompress-tarxz");
+import * as Listr from "listr";
+import * as chalk from "chalk";
+import * as shell from "shelljs";
+require("pkginfo")(module, "description");
+
 class Bindl extends Command {
-  static description = "describe the command here";
+  static description = `${module.exports.description}
+  The config will be read from any valid config file in the current directory. The configuration file can be defined using all the extensions and names accepted by ${chalk.blue(
+    "cosmiconfig"
+  )}, such as ${chalk.blue("bindl.config.js")}
+  `;
 
   static flags = {
-    version: flags.version({ char: "v" }),
+    version: flags.version(),
     help: flags.help({ char: "h" }),
     config: flags.string({
       char: "c",
-      description: "the path to the config file",
+      description: "Path to the config file",
     }),
   };
 
@@ -19,27 +27,63 @@ class Bindl extends Command {
 
     const explorer = cosmiconfig(this.config.name);
 
-    let result;
-    if (flags.config) {
-      try {
-        result = await explorer.load(flags.config);
-      } catch (error) {}
-    } else {
-      result = await explorer.search();
-    }
+    const result = flags.config
+      ? await explorer.load(flags.config)
+      : await explorer.search();
 
     if (!result) {
       this.error("I was not able to load the configuration file.");
     }
-    this.log(`config file passed as ${result.filepath}`);
 
-    const url = result.config.linux.x64.url;
-    const files_to_extract = result.config.linux.x64.extract;
-    await download(url, "binaries", {
-      extract: true,
-      filter: (file) => file.path === files_to_extract,
-      plugins: [decompressTarxz()],
-    });
+    const tasks = new Listr();
+
+    const plugins = [
+      require("decompress-tar")(),
+      require("decompress-tarbz2")(),
+      require("decompress-targz")(),
+      require("decompress-unzip")(),
+      require("decompress-tarxz")(),
+    ];
+
+    result.config.binaries.forEach(
+      async (binary: {
+        platform: "linux" | "darwin" | "win32";
+        arch: "x64" | "x86";
+        url: string;
+        files: { source: string; target: string }[];
+      }) => {
+        tasks.add({
+          title: `downloading and extracting ${chalk.blue.underline(
+            binary.url
+          )}`,
+          task: async () =>
+            download(
+              binary.url,
+              `./binaries/${binary.platform}/${binary.arch}`,
+              {
+                extract: true,
+                filter: (file) =>
+                  Boolean(binary.files.find((f) => f.source === file.path)),
+                map: (file) => {
+                  const f = binary.files.find((f) => f.source === file.path);
+                  if (f) {
+                    file.path = f.target;
+                  }
+                  return file;
+                },
+                plugins,
+              }
+            ),
+        });
+      }
+    );
+
+    try {
+      await shell.rm("-rf", "./binaries");
+      await tasks.run();
+    } catch (error) {
+      await shell.exit(1);
+    }
   }
 }
 
