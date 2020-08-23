@@ -10,7 +10,6 @@ Download and extract binaries from compressed packages
 <!-- toc -->
 * [bindl](#bindl)
 * [Usage](#usage)
-* [Commands](#commands)
 <!-- tocstop -->
 
 # Usage
@@ -29,7 +28,24 @@ USAGE
 ```
 <!-- usagestop -->
 
-# Commands
+```sh-session
+$ bindl --help
+Downloads and extracts binaries from compressed packages using a config file
+
+USAGE
+  $ bindl
+
+OPTIONS
+  -c, --config=config  Path to the config file
+  -h, --help           show CLI help
+  --version            show CLI version
+
+DESCRIPTION
+  The config will be read from any valid config file in the current directory. The configuration file can be
+  defined using all the extensions and names accepted by cosmiconfig, such as bindl.config.js
+```
+
+You can find an example of config file [here](./test/res/bindl.config.js).
 
 <!-- commands -->
 
