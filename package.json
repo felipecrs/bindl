@@ -22,7 +22,7 @@
     "listr": "^0.14.3",
     "pkginfo": "^0.4.1",
     "shelljs": "^0.8.4",
-    "tslib": "^1.13.0"
+    "tslib": "^2.0.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^9.1.2",
