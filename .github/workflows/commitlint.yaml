@@ -12,5 +12,4 @@ jobs:
       - name: commitlint
         uses: wagoid/commitlint-github-action@v2
         with:
-          failOnWarnings: true
           helpURL: https://www.conventionalcommits.org/
