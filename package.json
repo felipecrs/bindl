@@ -77,7 +77,7 @@
     "test": "nyc jest",
     "version": "oclif-dev readme && git add README.md",
     "release": "semantic-release",
-    "cz": "git-cz"
+    "cz": "cz"
   },
   "types": "lib/index.d.ts",
   "husky": {
