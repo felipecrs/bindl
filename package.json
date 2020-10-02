@@ -1,7 +1,7 @@
 {
   "name": "bindl",
   "description": "Downloads and extracts binaries from compressed packages using a config file",
-  "version": "1.0.1-beta.2",
+  "version": "1.0.1-beta.3",
   "author": "Felipe Santos @felipecassiors",
   "bin": {
     "bindl": "./bin/run"
