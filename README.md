@@ -2,8 +2,6 @@
 
 Download and extract binaries from compressed packages.
 
-test1
-
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/bindl.svg)](https://npmjs.org/package/bindl)
 [![Downloads/week](https://img.shields.io/npm/dw/bindl.svg)](https://npmjs.org/package/bindl)
