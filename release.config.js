@@ -40,6 +40,7 @@ module.exports = {
       "@semantic-release/github",
       {
         assets: "dist/*.tgz",
+        addReleases: "bottom"
       },
     ],
   ],
