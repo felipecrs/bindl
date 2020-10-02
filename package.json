@@ -2,11 +2,11 @@
   "name": "bindl",
   "description": "Downloads and extracts binaries from compressed packages using a config file",
   "version": "1.0.1-beta.4",
-  "author": "Felipe Santos @felipecassiors",
+  "author": "Felipe Santos @felipecrs",
   "bin": {
     "bindl": "./bin/run"
   },
-  "bugs": "https://github.com/felipecassiors/bindl/issues",
+  "bugs": "https://github.com/felipecrs/bindl/issues",
   "dependencies": {
     "@oclif/command": "^1.8.0",
     "@oclif/config": "^1.17.0",
@@ -61,7 +61,7 @@
     "/bin",
     "/lib"
   ],
-  "homepage": "https://github.com/felipecassiors/bindl",
+  "homepage": "https://github.com/felipecrs/bindl#readme",
   "keywords": [
     "oclif"
   ],
@@ -70,7 +70,7 @@
   "oclif": {
     "bin": "bindl"
   },
-  "repository": "felipecassiors/bindl",
+  "repository": "felipecrs/bindl",
   "scripts": {
     "posttest": "eslint . --ext .ts",
     "prepack": "rm -rf lib && tsc -b && oclif-dev readme",

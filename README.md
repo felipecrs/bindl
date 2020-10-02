@@ -2,10 +2,13 @@
 
 Download and extract binaries from compressed packages.
 
-[![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
+[![ci](https://github.com/felipecrs/bindl/workflows/ci/badge.svg)](https://github.com/felipecrs/bindl/actions?query=workflow%3Aci)
 [![Version](https://img.shields.io/npm/v/bindl.svg)](https://npmjs.org/package/bindl)
 [![Downloads/week](https://img.shields.io/npm/dw/bindl.svg)](https://npmjs.org/package/bindl)
 [![License](https://img.shields.io/npm/l/bindl.svg)](https://github.com/felipecassiors/bindl/blob/master/package.json)
+[![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 <!-- toc -->
 * [bindl](#bindl)

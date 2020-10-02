@@ -1,10 +1,8 @@
-name: Continuous Integration
+name: ci
 
 on:
   push:
-    branches: [master, beta]
   pull_request:
-    branches: [master, beta]
 
 jobs:
   build:
@@ -34,7 +32,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ secrets.GH_TOKEN_SEMANTIC_RELEASE }}
       - name: Use Node.js 12
         uses: actions/setup-node@v1
         with:
