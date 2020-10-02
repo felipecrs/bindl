@@ -1,3 +1,10 @@
+### [1.0.1-beta.4](https://github.com/felipecassiors/bindl/compare/v1.0.1-beta.3...v1.0.1-beta.4) (2020-10-02)
+
+
+### Bug Fixes
+
+* use another var again ([276d284](https://github.com/felipecassiors/bindl/commit/276d284a8066ab8cce6312fff5a436279f77ae49))
+
 ### [1.0.1-beta.3](https://github.com/felipecassiors/bindl/compare/v1.0.1-beta.2...v1.0.1-beta.3) (2020-10-02)
 
 
