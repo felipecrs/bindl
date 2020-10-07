@@ -82,7 +82,6 @@
   "types": "lib/index.d.ts",
   "husky": {
     "hooks": {
-      "pre-commit": "oclif-dev readme && git add README.md",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
