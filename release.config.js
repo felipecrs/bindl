@@ -9,6 +9,10 @@ module.exports = {
             release: "patch",
           },
           {
+            type: "perf",
+            release: "patch",
+          },
+          {
             type: "build",
             scope: "deps",
             release: "patch",
@@ -16,7 +20,24 @@ module.exports = {
         ],
       },
     ],
-    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        presetConfig: {
+          types: [
+            { type: "feat", section: "Features" },
+            { type: "fix", section: "Bug Fixes" },
+            { type: "perf", section: "Improvements" },
+            { type: "refactor", section: "Improvements" },
+            { type: "build", section: "Improvements" },
+            { type: "chore", hidden: true },
+            { type: "docs", hidden: true },
+            { type: "style", hidden: true },
+            { type: "test", hidden: true },
+          ],
+        },
+      },
+    ],
     "@semantic-release/changelog",
     [
       "@semantic-release/npm",
@@ -40,7 +61,7 @@ module.exports = {
       "@semantic-release/github",
       {
         assets: "dist/*.tgz",
-        addReleases: "bottom"
+        addReleases: "bottom",
       },
     ],
   ],
