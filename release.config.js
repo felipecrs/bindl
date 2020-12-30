@@ -25,15 +25,31 @@ module.exports = {
       {
         presetConfig: {
           types: [
-            { type: "feat", section: "Features" },
-            { type: "fix", section: "Bug Fixes" },
-            { type: "perf", section: "Improvements" },
-            { type: "refactor", section: "Improvements" },
-            { type: "build", section: "Improvements" },
-            { type: "chore", hidden: true },
-            { type: "docs", hidden: true },
-            { type: "style", hidden: true },
-            { type: "test", hidden: true },
+            {
+              type: "feat",
+              section: "Features",
+            },
+            {
+              type: "fix",
+              section: "Bug Fixes",
+            },
+            {
+              type: "perf",
+              section: "Performance Improvements",
+            },
+            {
+              type: "revert",
+              section: "Reverts",
+            },
+            {
+              type: "refactor",
+              section: "Code Refactoring",
+            },
+            {
+              type: "build",
+              scope: "deps",
+              section: "Dependencies",
+            },
           ],
         },
       },
