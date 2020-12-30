@@ -1,4 +1,4 @@
-name: Lint Commit Messages
+name: commitlint
 
 on: [pull_request]
 
@@ -9,7 +9,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: commitlint
+      - if: (github.actor!= 'dependabot[bot]') && (contains(github.head_ref, 'dependabot/') == false)
+        name: commitlint
         uses: wagoid/commitlint-github-action@v2
         with:
           helpURL: https://www.conventionalcommits.org/
