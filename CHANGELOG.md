@@ -1,3 +1,10 @@
+### [1.0.4](https://github.com/felipecrs/bindl/compare/v1.0.3...v1.0.4) (2021-01-19)
+
+
+### Dependencies
+
+* **deps:** bump tslib from 2.0.3 to 2.1.0 ([#60](https://github.com/felipecrs/bindl/issues/60)) ([b6570bc](https://github.com/felipecrs/bindl/commit/b6570bcb2df133e90bab8335969e19839e209cff))
+
 ### [1.0.3](https://github.com/felipecrs/bindl/compare/v1.0.2...v1.0.3) (2020-12-30)
 
 
