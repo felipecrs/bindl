@@ -23,7 +23,7 @@ $ npm install -g bindl
 $ bindl COMMAND
 running command...
 $ bindl (-v|--version|version)
-bindl/1.0.4 linux-x64 node-v12.20.1
+bindl/1.0.5 linux-x64 node-v12.20.1
 $ bindl --help [COMMAND]
 USAGE
   $ bindl COMMAND

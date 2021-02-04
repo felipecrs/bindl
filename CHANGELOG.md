@@ -1,3 +1,10 @@
+### [1.0.5](https://github.com/felipecrs/bindl/compare/v1.0.4...v1.0.5) (2021-02-04)
+
+
+### Dependencies
+
+* **deps:** bump @oclif/plugin-help from 3.2.1 to 3.2.2 ([#70](https://github.com/felipecrs/bindl/issues/70)) ([062fe67](https://github.com/felipecrs/bindl/commit/062fe67b5b01cc804ffa61176911682989ffe50f))
+
 ### [1.0.4](https://github.com/felipecrs/bindl/compare/v1.0.3...v1.0.4) (2021-01-19)
 
 
