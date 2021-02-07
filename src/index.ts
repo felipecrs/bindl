@@ -35,7 +35,7 @@ class Bindl extends Command {
       this.error("I was not able to load the configuration file.");
     }
 
-    const tasks = new Listr();
+    const tasks = new Listr({ concurrent: true });
 
     const plugins = [
       require("decompress-tar")(),
