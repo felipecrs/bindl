@@ -1,3 +1,16 @@
+## [1.1.0](https://github.com/felipecrs/bindl/compare/v1.0.3...v1.1.0) (2021-02-07)
+
+
+### Features
+
+* download binaries parallelly ([#71](https://github.com/felipecrs/bindl/issues/71)) ([84511e5](https://github.com/felipecrs/bindl/commit/84511e585937f18b54e565e6685c7ea2fa11d2b0))
+
+
+### Dependencies
+
+* **deps:** bump @oclif/plugin-help from 3.2.1 to 3.2.2 ([#70](https://github.com/felipecrs/bindl/issues/70)) ([062fe67](https://github.com/felipecrs/bindl/commit/062fe67b5b01cc804ffa61176911682989ffe50f))
+* **deps:** bump tslib from 2.0.3 to 2.1.0 ([#60](https://github.com/felipecrs/bindl/issues/60)) ([b6570bc](https://github.com/felipecrs/bindl/commit/b6570bcb2df133e90bab8335969e19839e209cff))
+
 ### [1.0.5](https://github.com/felipecrs/bindl/compare/v1.0.4...v1.0.5) (2021-02-04)
 
 
