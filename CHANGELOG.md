@@ -1,3 +1,10 @@
+### [1.1.1](https://github.com/felipecrs/bindl/compare/v1.1.0...v1.1.1) (2021-06-14)
+
+
+### Dependencies
+
+* **deps:** upgrade dependencies ([2693f95](https://github.com/felipecrs/bindl/commit/2693f9501d4b40eb6c2388deaee4bf749690387a))
+
 ## [1.1.0](https://github.com/felipecrs/bindl/compare/v1.0.3...v1.1.0) (2021-02-07)
 
 
