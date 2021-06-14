@@ -22,7 +22,7 @@ class Bindl extends Command {
     }),
   };
 
-  async run() {
+  async run(): Promise<void> {
     const { flags } = this.parse(Bindl);
 
     const explorer = cosmiconfig(this.config.name);
