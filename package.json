@@ -90,5 +90,9 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "volta": {
+    "node": "14.17.0",
+    "npm": "7.17.0"
   }
 }
