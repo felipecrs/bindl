@@ -1,3 +1,15 @@
+## [2.0.0](https://github.com/felipecrs/bindl/compare/v1.1.1...v2.0.0) (2021-08-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* The minimum version of Node required was bumped from 8
+to 10 due to the new dependencies.
+
+### Features
+
+* fix installation on Windows, remove `tslib` ([#131](https://github.com/felipecrs/bindl/issues/131)) ([145c5c0](https://github.com/felipecrs/bindl/commit/145c5c0d779bc8430187f596d64f4fe02371f36c))
+
 ### [1.1.1](https://github.com/felipecrs/bindl/compare/v1.1.0...v1.1.1) (2021-06-14)
 
 
