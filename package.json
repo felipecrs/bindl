@@ -8,6 +8,7 @@
   },
   "bugs": "https://github.com/felipecrs/bindl/issues",
   "dependencies": {
+    "@felipecrs/decompress-tarxz": "^4.0.0",
     "@oclif/command": "^1.8.0",
     "@oclif/config": "^1.17.0",
     "@oclif/plugin-help": "^3.2.0",
@@ -16,13 +17,11 @@
     "decompress-tar": "^4.1.1",
     "decompress-tarbz2": "^4.1.1",
     "decompress-targz": "^4.1.1",
-    "decompress-tarxz": "^3.0.0",
     "decompress-unzip": "^4.0.1",
     "download": "^8.0.0",
     "listr": "^0.14.3",
     "pkginfo": "^0.4.1",
-    "shelljs": "^0.8.4",
-    "tslib": "^2.0.1"
+    "shelljs": "^0.8.4"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.0.0",
@@ -30,7 +29,7 @@
     "@oclif/dev-cli": "^1.22.2",
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.0",
-    "@types/download": "^6.2.4",
+    "@types/download": "^8.0.1",
     "@types/jest": "^26.0.20",
     "@types/listr": "^0.14.2",
     "@types/node": "^10.17.28",
@@ -57,7 +56,7 @@
     "typescript": "^4.0.2"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=10.0.0"
   },
   "files": [
     "/bin",
@@ -93,7 +92,7 @@
     }
   },
   "volta": {
-    "node": "14.17.0",
-    "npm": "7.17.0"
+    "node": "14.17.4",
+    "npm": "7.20.3"
   }
 }
