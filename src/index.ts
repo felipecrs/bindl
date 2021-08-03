@@ -42,7 +42,7 @@ class Bindl extends Command {
       require("decompress-tarbz2")(),
       require("decompress-targz")(),
       require("decompress-unzip")(),
-      require("decompress-tarxz")(),
+      require("@felipecrs/decompress-tarxz")(),
     ];
 
     result.config.binaries.forEach(
