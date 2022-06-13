@@ -22,8 +22,8 @@ Download and extract binaries from compressed packages.
 $ npm install -g bindl
 $ bindl COMMAND
 running command...
-$ bindl (-v|--version|version)
-bindl/2.0.0 linux-x64 node-v14.17.4
+$ bindl (--version|-v)
+bindl/2.0.0 linux-x64 node-v16.15.1
 $ bindl --help [COMMAND]
 USAGE
   $ bindl COMMAND
@@ -31,25 +31,50 @@ USAGE
 ```
 <!-- usagestop -->
 
-```sh-session
-$ bindl --help
-Downloads and extracts binaries from compressed packages using a config file
-
-USAGE
-  $ bindl
-
-OPTIONS
-  -c, --config=config  Path to the config file
-  -h, --help           show CLI help
-  --version            show CLI version
-
-DESCRIPTION
-  The config will be read from any valid config file in the current directory. The configuration file can be
-  defined using all the extensions and names accepted by cosmiconfig, such as bindl.config.js
-```
-
 You can find an example of config file [here](./test/res/bindl.config.js).
 
 <!-- commands -->
+- [bindl](#bindl)
+- [Usage](#usage)
+  - [`bindl .`](#bindl-)
+  - [`bindl version`](#bindl-version)
 
+## `bindl .`
+
+Downloads and extracts binaries from compressed packages using a config file
+
+```
+USAGE
+  $ bindl . [--version] [--help] [-c <value>]
+
+FLAGS
+  -c, --config=<value>  Path to the config file
+  --help                Show CLI help.
+  --version             Show CLI version.
+
+DESCRIPTION
+  Downloads and extracts binaries from compressed packages using a config file
+
+  The config will be read from any valid config file in the current directory. The configuration file can be defined
+  using all the extensions and names accepted by cosmiconfig, such as bindl.config.js
+```
+
+_See code: [src/index.ts](https://github.com/felipecrs/bindl/blob/v2.0.0/src/index.ts)_
+
+## `bindl version`
+
+```
+USAGE
+  $ bindl version [--verbose]
+
+FLAGS
+  --verbose  Show additional information about the CLI.
+
+FLAG DESCRIPTIONS
+  --verbose  Show additional information about the CLI.
+
+    Additionally shows the architecture, node version, operating system, and versions of plugins that the CLI is using.
+```
+
+_See code: [@oclif/plugin-version](https://github.com/oclif/plugin-version/blob/v1.1.0/src/commands/version.ts)_
 <!-- commandsstop -->

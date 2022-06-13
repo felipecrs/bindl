@@ -1,13 +1,12 @@
-import { getBinPathSync } from "get-bin-path";
 import * as execa from "execa";
 import * as shell from "shelljs";
 import * as tmp from "tmp";
 
-const bin = getBinPathSync();
+const bin = `${process.cwd()}/bin/dev`;
 
 const configPath = `${process.cwd()}/test/res/bindl.config.js`;
 
-jest.setTimeout(30000);
+jest.setTimeout(30_000);
 
 beforeAll(() => {
   process.env = Object.assign(process.env, { FORCE_COLOR: 0 });

@@ -1,12 +1,14 @@
-import { Command, flags } from "@oclif/command";
+/* eslint-disable unicorn/prefer-module */
+import { Command, Flags } from "@oclif/core";
 import { cosmiconfig } from "cosmiconfig";
 import * as download from "download";
 import * as Listr from "listr";
+// eslint-disable-next-line unicorn/import-style
 import * as chalk from "chalk";
 import * as shell from "shelljs";
 require("pkginfo")(module, "description");
 
-class Bindl extends Command {
+export class Bindl extends Command {
   static description = `${module.exports.description}
   The config will be read from any valid config file in the current directory. The configuration file can be defined using all the extensions and names accepted by ${chalk.blue(
     "cosmiconfig"
@@ -14,16 +16,16 @@ class Bindl extends Command {
   `;
 
   static flags = {
-    version: flags.version(),
-    help: flags.help({ char: "h" }),
-    config: flags.string({
+    version: Flags.version(),
+    help: Flags.help(),
+    config: Flags.string({
       char: "c",
       description: "Path to the config file",
     }),
   };
 
   async run(): Promise<void> {
-    const { flags } = this.parse(Bindl);
+    const { flags } = await this.parse(Bindl);
 
     const explorer = cosmiconfig(this.config.name);
 
@@ -45,6 +47,7 @@ class Bindl extends Command {
       require("@felipecrs/decompress-tarxz")(),
     ];
 
+    // eslint-disable-next-line unicorn/no-array-for-each
     result.config.binaries.forEach(
       async (binary: {
         platform: "linux" | "darwin" | "win32";
@@ -63,12 +66,13 @@ class Bindl extends Command {
               {
                 extract: true,
                 filter: (file) =>
-                  Boolean(binary.files.find((f) => f.source === file.path)),
+                  Boolean(binary.files.some((f) => f.source === file.path)),
                 map: (file) => {
                   const f = binary.files.find((f) => f.source === file.path);
                   if (f) {
                     file.path = f.target;
                   }
+
                   return file;
                 },
                 plugins,
@@ -79,12 +83,11 @@ class Bindl extends Command {
     );
 
     try {
-      await shell.rm("-rf", "./binaries");
+      shell.rm("-rf", "./binaries");
       await tasks.run();
-    } catch (error) {
-      await shell.exit(1);
+    } catch {
+      shell.exit(1);
     }
   }
 }
 
-export = Bindl;
