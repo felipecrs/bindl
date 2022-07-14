@@ -23,7 +23,7 @@ $ npm install -g bindl
 $ bindl COMMAND
 running command...
 $ bindl (--version|-v)
-bindl/2.0.0 linux-x64 node-v16.15.1
+bindl/2.0.0 linux-x64 node-v16.16.0
 $ bindl --help [COMMAND]
 USAGE
   $ bindl COMMAND
@@ -34,10 +34,8 @@ USAGE
 You can find an example of config file [here](./test/res/bindl.config.js).
 
 <!-- commands -->
-- [bindl](#bindl)
-- [Usage](#usage)
-  - [`bindl .`](#bindl-)
-  - [`bindl version`](#bindl-version)
+* [`bindl .`](#bindl-)
+* [`bindl version`](#bindl-version)
 
 ## `bindl .`
 
@@ -65,10 +63,13 @@ _See code: [src/index.ts](https://github.com/felipecrs/bindl/blob/v2.0.0/src/ind
 
 ```
 USAGE
-  $ bindl version [--verbose]
+  $ bindl version [--json] [--verbose]
 
 FLAGS
   --verbose  Show additional information about the CLI.
+
+GLOBAL FLAGS
+  --json  Format output as json.
 
 FLAG DESCRIPTIONS
   --verbose  Show additional information about the CLI.
@@ -76,5 +77,5 @@ FLAG DESCRIPTIONS
     Additionally shows the architecture, node version, operating system, and versions of plugins that the CLI is using.
 ```
 
-_See code: [@oclif/plugin-version](https://github.com/oclif/plugin-version/blob/v1.1.0/src/commands/version.ts)_
+_See code: [@oclif/plugin-version](https://github.com/oclif/plugin-version/blob/v1.1.1/src/commands/version.ts)_
 <!-- commandsstop -->
