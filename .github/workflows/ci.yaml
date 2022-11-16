@@ -36,6 +36,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
       - uses: volta-cli/action@v4
       - run: npm ci
       - run: npm run release
