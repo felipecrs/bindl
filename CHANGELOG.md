@@ -1,3 +1,22 @@
+## [3.0.0](https://github.com/felipecrs/bindl/compare/v2.0.0...v3.0.0) (2022-11-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* honor `npm_config_arch` if set
+* **deps:** drop support for node 10 and 12
+
+### Features
+
+* honor `npm_config_arch` if set ([2f505ac](https://github.com/felipecrs/bindl/commit/2f505ac3fbe5b34cf710e4bceef16f417478e6d8))
+
+
+### Dependencies
+
+* **deps:** drop support for node 10 and 12 ([6883ba6](https://github.com/felipecrs/bindl/commit/6883ba6eb4f5c9111cf76caf0d05e1913c785bfd))
+* **deps:** refresh dependencies ([18d9f77](https://github.com/felipecrs/bindl/commit/18d9f7783e277fb26766c2f39e9a3a41d7a310fc))
+* **deps:** tidy up dependencies ([afa682a](https://github.com/felipecrs/bindl/commit/afa682a3e9deece69ab0d2a685b34288e8a95442))
+
 ## [2.0.0](https://github.com/felipecrs/bindl/compare/v1.1.1...v2.0.0) (2021-08-03)
 
 
