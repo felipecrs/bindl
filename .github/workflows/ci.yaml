@@ -6,9 +6,6 @@ on:
   pull_request:
     branches: [master]
 
-permissions:
-  contents: write # Needed by semantic-release
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -42,5 +39,5 @@ jobs:
       - run: npm ci
       - run: npm run release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
