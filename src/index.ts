@@ -56,6 +56,20 @@ class Bindl extends Command {
           title: `downloading and extracting ${chalk.blue.underline(
             binary.url
           )}`,
+          skip: () => {
+            // If npm_config_arch is set, we only download the binary for the
+            // current platform and the arch set by npm_config_arch.
+            if (process.env.npm_config_arch) {
+              if (process.env.npm_config_arch !== binary.arch) {
+                return "npm_config_arch is set to a different arch";
+              }
+              // Check if current platform is the same as the binary platform
+              if (process.platform !== binary.platform) {
+                return "npm_config_arch is set and current platform is different from the binary platform";
+              }
+            }
+            return false
+          },
           task: async () =>
             download(
               binary.url,
