@@ -11,6 +11,6 @@ jobs:
           fetch-depth: 0
       - if: (github.actor!= 'dependabot[bot]') && (contains(github.head_ref, 'dependabot/') == false)
         name: commitlint
-        uses: wagoid/commitlint-github-action@v2
+        uses: wagoid/commitlint-github-action@v5
         with:
           helpURL: https://www.conventionalcommits.org/
