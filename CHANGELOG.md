@@ -1,3 +1,14 @@
+## [4.0.0](https://github.com/felipecrs/bindl/compare/v3.0.0...v4.0.0) (2022-11-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* support custom decompress plugins, drop support for xz by default
+
+### Features
+
+* support custom decompress plugins, drop support for xz by default ([492b1ca](https://github.com/felipecrs/bindl/commit/492b1ca4b23d10bec91a5483b27a77b22796728a))
+
 ## [3.0.0](https://github.com/felipecrs/bindl/compare/v2.0.0...v3.0.0) (2022-11-16)
 
 
