@@ -50,11 +50,16 @@ module.exports = {
         },
       ],
     },
+    // {
+    //   platform: "win32",
+    //   arch: "x32",
+    //   url: `${shellcheckReleaseUrl}.zip`,
+    //   files: [{ source: `shellcheck.exe`, target: "shellcheck.exe" }],
+    // },
     {
       platform: "win32",
       arch: "x32",
       url: `${shellcheckReleaseUrl}.zip`,
-      files: [{ source: `shellcheck.exe`, target: "shellcheck.exe" }],
     },
     {
       platform: "win32",

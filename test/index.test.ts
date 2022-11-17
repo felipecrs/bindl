@@ -35,10 +35,16 @@ describe("bindl", () => {
     expect(shell.test("-f", "./binaries/linux/arm64/shellcheck")).toBeTruthy();
     expect(shell.test("-f", "./binaries/darwin/x64/shellcheck")).toBeTruthy();
     expect(
+      shell.test("-f", "./binaries/win32/x64/shellcheck.exe")
+    ).toBeTruthy();
+    expect(
       shell.test("-f", "./binaries/win32/x32/shellcheck.exe")
     ).toBeTruthy();
     expect(
-      shell.test("-f", "./binaries/win32/x64/shellcheck.exe")
+      shell.test("-f", "./binaries/win32/x32/LICENSE.txt")
+    ).toBeTruthy();
+    expect(
+      shell.test("-f", "./binaries/win32/x32/README.txt")
     ).toBeTruthy();
   });
 
@@ -61,6 +67,17 @@ describe("bindl", () => {
     }
     expect(shell.test("-f", "./binaries/linux/arm/shellcheck")).toBeFalsy();
     expect(shell.test("-f", "./binaries/linux/arm64/shellcheck")).toBeFalsy();
-    expect(shell.test("-f", "./binaries/win32/x32/shellcheck.exe")).toBeFalsy();
+    expect(
+      shell.test("-f", "./binaries/win32/x64/shellcheck.exe")
+    ).toBeFalsy();
+    expect(
+      shell.test("-f", "./binaries/win32/x32/shellcheck.exe")
+    ).toBeFalsy();
+    expect(
+      shell.test("-f", "./binaries/win32/x32/LICENSE.txt")
+    ).toBeFalsy();
+    expect(
+      shell.test("-f", "./binaries/win32/x32/README.txt")
+    ).toBeFalsy();
   });
 });

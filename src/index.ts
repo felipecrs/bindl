@@ -82,12 +82,18 @@ class Bindl extends Command {
               `./binaries/${binary.platform}/${binary.arch}`,
               {
                 extract: true,
-                filter: (file) =>
-                  Boolean(binary.files.find((f) => f.source === file.path)),
+                filter: (file) => {
+                  if (binary.files) {
+                    return Boolean(binary.files.find((f) => f.source === file.path))
+                  }
+                  return true
+                },
                 map: (file) => {
-                  const f = binary.files.find((f) => f.source === file.path);
-                  if (f) {
-                    file.path = f.target;
+                  if (binary.files) {
+                    const f = binary.files.find((f) => f.source === file.path);
+                    if (f) {
+                      file.path = f.target;
+                    }
                   }
                   return file;
                 },
