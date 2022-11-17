@@ -52,7 +52,7 @@ module.exports = {
     },
     {
       platform: "win32",
-      arch: "x32",
+      arch: "ia32",
       url: `${shellcheckReleaseUrl}.zip`,
     },
     {
