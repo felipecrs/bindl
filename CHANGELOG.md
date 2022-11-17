@@ -1,3 +1,10 @@
+## [4.0.1](https://github.com/felipecrs/bindl/compare/v4.0.0...v4.0.1) (2022-11-17)
+
+
+### Bug Fixes
+
+* download when no files are specified ([4b2d56d](https://github.com/felipecrs/bindl/commit/4b2d56d38404f0487eb0fafca3e9c56bfd4cbf39))
+
 ## [4.0.0](https://github.com/felipecrs/bindl/compare/v3.0.0...v4.0.0) (2022-11-17)
 
 
