@@ -42,8 +42,14 @@ class Bindl extends Command {
       require("decompress-tarbz2")(),
       require("decompress-targz")(),
       require("decompress-unzip")(),
-      require("@felipecrs/decompress-tarxz")(),
     ];
+
+    // Load the custom decompressPlugins
+    if (result.config.decompressPlugins && result.config.decompressPlugins.length > 0) {
+      for (const plugin of result.config.decompressPlugins) {
+        plugins.push(require(plugin)());
+      }
+    }
 
     result.config.binaries.forEach(
       async (binary: {

@@ -1,9 +1,10 @@
 const version = "v0.8.0";
-const shortVersion = version.substring(1);
 const shellcheckReleaseUrl = `https://github.com/koalaman/shellcheck/releases/download/${version}/shellcheck-${version}`;
-const shellcheckM1DownloadBaseUrl = `https://github.com/vscode-shellcheck/shellcheck-m1/releases/download/${version}/`;
 
 module.exports = {
+  decompressPlugins: [
+    "@felipecrs/decompress-tarxz"
+  ],
   binaries: [
     {
       platform: "linux",
@@ -45,18 +46,6 @@ module.exports = {
       files: [
         {
           source: `shellcheck-${version}/shellcheck`,
-          target: "shellcheck",
-        },
-      ],
-    },
-    {
-      platform: "darwin",
-      arch: "arm64",
-      // Sync from homebrew
-      url: `${shellcheckM1DownloadBaseUrl}shellcheck-${shortVersion}.tar.gz`,
-      files: [
-        {
-          source: `shellcheck/${shortVersion}/bin/shellcheck`,
           target: "shellcheck",
         },
       ],
