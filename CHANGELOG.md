@@ -1,3 +1,10 @@
+## [4.1.0](https://github.com/felipecrs/bindl/compare/v4.0.1...v4.1.0) (2022-12-05)
+
+
+### Features
+
+* allow to skip download with BINDL_SKIP ([bc69ed8](https://github.com/felipecrs/bindl/commit/bc69ed869f8d701c1513cc42494e92ec36051c6a))
+
 ## [4.0.1](https://github.com/felipecrs/bindl/compare/v4.0.0...v4.0.1) (2022-11-17)
 
 

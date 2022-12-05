@@ -11,8 +11,8 @@ Download and extract binaries from compressed packages.
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 <!-- toc -->
-- [bindl](#bindl)
-- [Usage](#usage)
+* [bindl](#bindl)
+* [Usage](#usage)
 <!-- tocstop -->
 
 # Usage
@@ -23,7 +23,7 @@ $ npm install -g bindl
 $ bindl COMMAND
 running command...
 $ bindl (-v|--version|version)
-bindl/4.0.1 linux-x64 node-v18.12.1
+bindl/4.1.0 linux-x64 node-v18.12.1
 $ bindl --help [COMMAND]
 USAGE
   $ bindl COMMAND
