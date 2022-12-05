@@ -40,12 +40,8 @@ describe("bindl", () => {
     expect(
       shell.test("-f", "./binaries/win32/ia32/shellcheck.exe")
     ).toBeTruthy();
-    expect(
-      shell.test("-f", "./binaries/win32/ia32/LICENSE.txt")
-    ).toBeTruthy();
-    expect(
-      shell.test("-f", "./binaries/win32/ia32/README.txt")
-    ).toBeTruthy();
+    expect(shell.test("-f", "./binaries/win32/ia32/LICENSE.txt")).toBeTruthy();
+    expect(shell.test("-f", "./binaries/win32/ia32/README.txt")).toBeTruthy();
   });
 
   it("downloads only linux-arm64 binary when npm_config_arch is set", async () => {
@@ -67,17 +63,19 @@ describe("bindl", () => {
     }
     expect(shell.test("-f", "./binaries/linux/arm/shellcheck")).toBeFalsy();
     expect(shell.test("-f", "./binaries/linux/arm64/shellcheck")).toBeFalsy();
-    expect(
-      shell.test("-f", "./binaries/win32/x64/shellcheck.exe")
-    ).toBeFalsy();
+    expect(shell.test("-f", "./binaries/win32/x64/shellcheck.exe")).toBeFalsy();
     expect(
       shell.test("-f", "./binaries/win32/ia32/shellcheck.exe")
     ).toBeFalsy();
-    expect(
-      shell.test("-f", "./binaries/win32/ia32/LICENSE.txt")
-    ).toBeFalsy();
-    expect(
-      shell.test("-f", "./binaries/win32/ia32/README.txt")
-    ).toBeFalsy();
+    expect(shell.test("-f", "./binaries/win32/ia32/LICENSE.txt")).toBeFalsy();
+    expect(shell.test("-f", "./binaries/win32/ia32/README.txt")).toBeFalsy();
+  });
+
+  it("downloads nothing when BINDL_SKIP is set", async () => {
+    const result = await execa.command(`${bin} --config ${configPath}`, {
+      env: { BINDL_SKIP: "true" },
+    });
+    expect(result.stdout).toContain(`Skipping`);
+    expect(result.exitCode).toBe(0);
   });
 });

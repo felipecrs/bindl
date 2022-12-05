@@ -25,6 +25,12 @@ class Bindl extends Command {
   async run(): Promise<void> {
     const { flags } = this.parse(Bindl);
 
+    // Return early if BINDL_SKIP is set
+    if (process.env.BINDL_SKIP) {
+      this.log("Skipping download due to the BINDL_SKIP env var being set");
+      return;
+    }
+
     const explorer = cosmiconfig(this.config.name);
 
     const result = flags.config
