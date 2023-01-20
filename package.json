@@ -10,7 +10,7 @@
   "dependencies": {
     "@oclif/command": "^1.8.0",
     "@oclif/config": "^1.17.0",
-    "@oclif/plugin-help": "^3.2.0",
+    "@oclif/plugin-help": "^5.2.0",
     "chalk": "^4.1.0",
     "cosmiconfig": "^7.0.0",
     "decompress-tar": "^4.1.1",
