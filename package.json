@@ -44,7 +44,7 @@
     "eslint-config-oclif-typescript": "^1.0.3",
     "eslint-config-prettier": "^8.0.0",
     "execa": "^5.0.0",
-    "get-bin-path": "^5.1.0",
+    "get-bin-path": "^9.0.0",
     "husky": "^4.2.5",
     "jest": "^27.5.1",
     "nyc": "^15.1.0",
