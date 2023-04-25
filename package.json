@@ -40,7 +40,7 @@
     "conventional-changelog-conventionalcommits": "^5.0.0",
     "cz-conventional-changelog": "^3.2.0",
     "eslint": "^7.20.0",
-    "eslint-config-oclif": "^3.1.0",
+    "eslint-config-oclif": "^4.0.0",
     "eslint-config-oclif-typescript": "^1.0.3",
     "eslint-config-prettier": "^8.0.0",
     "execa": "^5.0.0",
