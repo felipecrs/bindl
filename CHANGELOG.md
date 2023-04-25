@@ -1,3 +1,16 @@
+## [4.1.1](https://github.com/felipecrs/bindl/compare/v4.1.0...v4.1.1) (2023-04-25)
+
+
+### Dependencies
+
+* **deps:** bump @oclif/command from 1.8.20 to 1.8.24 ([#322](https://github.com/felipecrs/bindl/issues/322)) ([bdcf560](https://github.com/felipecrs/bindl/commit/bdcf56086420ab8ab02cda771f0cb336c04a4c18))
+* **deps:** bump @oclif/config from 1.18.6 to 1.18.8 ([#266](https://github.com/felipecrs/bindl/issues/266)) ([8ab86e5](https://github.com/felipecrs/bindl/commit/8ab86e5b1c77315a3fec70f0b7b2e52e89e50ed5))
+* **deps:** bump @oclif/plugin-help from 3.3.1 to 5.2.9 ([#310](https://github.com/felipecrs/bindl/issues/310)) ([5270777](https://github.com/felipecrs/bindl/commit/5270777c6cd1a629e767b2014363bffaef134f90))
+* **deps:** bump decode-uri-component from 0.2.0 to 0.2.2 ([#293](https://github.com/felipecrs/bindl/issues/293)) ([f0b2fd6](https://github.com/felipecrs/bindl/commit/f0b2fd6e9a590bb2432bd84dcd39c6884335d28e))
+* **deps:** bump json5 from 2.2.1 to 2.2.3 ([#294](https://github.com/felipecrs/bindl/issues/294)) ([a2c81cb](https://github.com/felipecrs/bindl/commit/a2c81cb46082c59ba0985927719c7f7b98f28d92))
+* **deps:** bump yaml, cosmiconfig, semantic-release and husky ([#321](https://github.com/felipecrs/bindl/issues/321)) ([2a3299e](https://github.com/felipecrs/bindl/commit/2a3299ec7734b5356379425b74db332dc6dd5563))
+* **deps:** update `oclif` to latest version and several other dependencies ([#183](https://github.com/felipecrs/bindl/issues/183)) ([a9cf7a8](https://github.com/felipecrs/bindl/commit/a9cf7a82b191e3a5e74ca7586ec22243b350ba83))
+
 ## [4.1.0](https://github.com/felipecrs/bindl/compare/v4.0.1...v4.1.0) (2022-12-05)
 
 
