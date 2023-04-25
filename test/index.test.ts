@@ -1,13 +1,12 @@
-import { getBinPathSync } from "get-bin-path";
 import * as execa from "execa";
 import * as shell from "shelljs";
 import * as tmp from "tmp";
 
-const bin = getBinPathSync();
+const bin = `${process.cwd()}/bin/dev`;
 
 const configPath = `${process.cwd()}/test/res/bindl.config.js`;
 
-jest.setTimeout(30000);
+jest.setTimeout(30_000);
 
 beforeAll(() => {
   process.env = Object.assign(process.env, { FORCE_COLOR: 0 });
@@ -52,15 +51,33 @@ describe("bindl", () => {
     expect(result.stdout).toContain(`downloading and extracting`);
     expect(result.exitCode).toBe(0);
 
-    if (process.platform === "linux") {
-      expect(shell.test("-f", "./binaries/linux/x64/shellcheck")).toBeTruthy();
-    } else if (process.platform === "darwin") {
-      expect(shell.test("-f", "./binaries/darwin/x64/shellcheck")).toBeTruthy();
-    } else if (process.platform === "win32") {
-      expect(
-        shell.test("-f", "./binaries/win32/x64/shellcheck.exe")
-      ).toBeTruthy();
+    switch (process.platform) {
+      case "linux": {
+        expect(
+          shell.test("-f", "./binaries/linux/x64/shellcheck")
+        ).toBeTruthy();
+
+        break;
+      }
+
+      case "darwin": {
+        expect(
+          shell.test("-f", "./binaries/darwin/x64/shellcheck")
+        ).toBeTruthy();
+
+        break;
+      }
+
+      case "win32": {
+        expect(
+          shell.test("-f", "./binaries/win32/x64/shellcheck.exe")
+        ).toBeTruthy();
+
+        break;
+      }
+      // No default
     }
+
     expect(shell.test("-f", "./binaries/linux/arm/shellcheck")).toBeFalsy();
     expect(shell.test("-f", "./binaries/linux/arm64/shellcheck")).toBeFalsy();
     expect(shell.test("-f", "./binaries/win32/x64/shellcheck.exe")).toBeFalsy();
