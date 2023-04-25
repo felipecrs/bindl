@@ -10,48 +10,38 @@ Download and extract binaries from compressed packages.
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
-<!-- toc -->
-- [bindl](#bindl)
-- [Usage](#usage)
-<!-- tocstop -->
-
-# Usage
-
-<!-- usage -->
-```sh-session
-$ npm install -g bindl
-$ bindl COMMAND
-running command...
-$ bindl (-v|--version|version)
-bindl/4.1.0 linux-x64 node-v18.12.1
-$ bindl --help [COMMAND]
-USAGE
-  $ bindl COMMAND
-...
-```
-<!-- usagestop -->
+## Usage
 
 ```sh-session
+$ npm install --global bindl
+
 $ bindl --help
 Downloads and extracts binaries from compressed packages using a config file
 
 USAGE
-  $ bindl
+  $ bindl [--version] [--help] [-c <value>]
 
-OPTIONS
-  -c, --config=config  Path to the config file
-  -h, --help           show CLI help
-  --version            show CLI version
+FLAGS
+  -c, --config=<value>  Path to the config file
+  --help                Show CLI help.
+  --version             Show CLI version.
 
 DESCRIPTION
-  The config will be read from any valid config file in the current directory. The configuration file can be
-  defined using all the extensions and names accepted by cosmiconfig, such as bindl.config.js
+  Downloads and extracts binaries from compressed packages using a config file
+  The config will be read from any valid config file in the current directory. The configuration file can be defined using all
+  the extensions and names accepted by cosmiconfig, such as bindl.config.js
 ```
 
-You can find an example of config file [here](./test/res/bindl.config.js).
+You can find an example of a config file [here](./test/res/bindl.config.js).
 
-You can also skip the downloads by setting the `BINDL_SKIP` environment variable to a truthy value.
+## Environment variables
 
-<!-- commands -->
+When called without any environment variables, `bindl` downloads all packages from the config file, not matter the platform or architecture.
 
-<!-- commandsstop -->
+### `npm_config_arch`
+
+When the `npm_config_arch` is set, `bindl` will only download the packages that match the given architecture for the current architecture. For example, if you set `npm_config_arch=x64` and you are running on Linux, `bindl` will only download the packages that match the `linux` platform and the `x64` architecture, skipping all other packages.
+
+### `BINDL_SKIP`
+
+You can also skip the downloads by setting the `BINDL_SKIP` environment variable to a truthy value, like `BINDL_SKIP=1` or `BINDL_SKIP=true`.
