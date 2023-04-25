@@ -39,7 +39,6 @@
     "eslint-config-oclif-typescript": "^1.0.3",
     "eslint-config-prettier": "^8.0.0",
     "execa": "^5.0.0",
-    "get-bin-path": "^5.1.0",
     "jest": "^29.5.0",
     "nyc": "^15.1.0",
     "prettier": "^2.0.5",
@@ -54,8 +53,7 @@
   },
   "files": [
     "/bin/run*",
-    "/lib",
-    "/npm-shrinkwrap.json"
+    "/lib"
   ],
   "homepage": "https://github.com/felipecrs/bindl#readme",
   "keywords": [
@@ -83,8 +81,7 @@
     "lint": "eslint . --ext .ts --config .eslintrc && prettier --check .",
     "prepack": "npm run build",
     "test": "nyc jest",
-    "posttest": "npm run lint",
-    "version": "git add README.md"
+    "posttest": "npm run lint"
   },
   "types": "lib/index.d.ts",
   "volta": {
