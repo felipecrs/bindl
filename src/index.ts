@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
 import { Command, Flags } from "@oclif/core";
 import { cosmiconfig } from "cosmiconfig";
 import * as download from "download";
