@@ -55,8 +55,7 @@
   "files": [
     "/bin/run*",
     "/lib",
-    "/npm-shrinkwrap.json",
-    "/oclif.manifest.json"
+    "/npm-shrinkwrap.json"
   ],
   "homepage": "https://github.com/felipecrs/bindl#readme",
   "keywords": [
@@ -82,11 +81,10 @@
   "scripts": {
     "build": "rm -rf lib/ && tsc -b",
     "lint": "eslint . --ext .ts --config .eslintrc && prettier --check .",
-    "prepack": "npm run build && oclif-dev manifest && oclif-dev readme",
-    "postpack": "rm -f oclif.manifest.json",
+    "prepack": "npm run build",
     "test": "nyc jest",
     "posttest": "npm run lint",
-    "version": "oclif-dev readme && git add README.md"
+    "version": "git add README.md"
   },
   "types": "lib/index.d.ts",
   "volta": {

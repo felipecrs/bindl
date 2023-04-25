@@ -14,6 +14,8 @@ Download and extract binaries from compressed packages.
 
 - [bindl](#bindl)
 - [Usage](#usage)
+  - [`bindl .`](#bindl-)
+  - [`bindl version`](#bindl-version)
 <!-- tocstop -->
 
 # Usage
