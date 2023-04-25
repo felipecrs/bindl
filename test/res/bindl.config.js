@@ -2,9 +2,7 @@ const version = "v0.8.0";
 const shellcheckReleaseUrl = `https://github.com/koalaman/shellcheck/releases/download/${version}/shellcheck-${version}`;
 
 module.exports = {
-  decompressPlugins: [
-    "@felipecrs/decompress-tarxz"
-  ],
+  decompressPlugins: ["@felipecrs/decompress-tarxz"],
   binaries: [
     {
       platform: "linux",
