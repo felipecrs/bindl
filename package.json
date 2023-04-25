@@ -23,8 +23,6 @@
     "shelljs": "^0.8.4"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.2.0",
-    "@commitlint/config-conventional": "^17.2.0",
     "@felipecrs/decompress-tarxz": "^4.0.0",
     "@oclif/dev-cli": "^1.22.2",
     "@semantic-release/changelog": "^6.0.1",
@@ -36,16 +34,13 @@
     "@types/shelljs": "^0.8.8",
     "@types/tmp": "^0.2.0",
     "@typescript-eslint/eslint-plugin": "^4.26.1",
-    "commitizen": "^4.1.5",
     "conventional-changelog-conventionalcommits": "^5.0.0",
-    "cz-conventional-changelog": "^3.2.0",
     "eslint": "^7.20.0",
     "eslint-config-oclif": "^3.1.0",
     "eslint-config-oclif-typescript": "^1.0.3",
     "eslint-config-prettier": "^8.0.0",
     "execa": "^5.0.0",
     "get-bin-path": "^5.1.0",
-    "husky": "^8.0.3",
     "jest": "^27.5.1",
     "nyc": "^15.1.0",
     "prettier": "^2.0.5",
@@ -77,20 +72,9 @@
     "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
     "test": "nyc jest",
     "version": "oclif-dev readme && git add README.md",
-    "release": "semantic-release",
-    "cz": "cz"
+    "release": "semantic-release"
   },
   "types": "lib/index.d.ts",
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
   "volta": {
     "node": "18.16.0",
     "npm": "9.6.5"
