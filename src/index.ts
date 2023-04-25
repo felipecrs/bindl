@@ -27,6 +27,12 @@ export class Bindl extends Command {
   async run(): Promise<void> {
     const { flags } = await this.parse(Bindl);
 
+    // Return early if BINDL_SKIP is set
+    if (process.env.BINDL_SKIP) {
+      this.log("Skipping download due to the BINDL_SKIP env var being set");
+      return;
+    }
+
     const explorer = cosmiconfig(this.config.name);
 
     const result = flags.config
@@ -44,10 +50,15 @@ export class Bindl extends Command {
       require("decompress-tarbz2")(),
       require("decompress-targz")(),
       require("decompress-unzip")(),
-      require("@felipecrs/decompress-tarxz")(),
     ];
 
-    // eslint-disable-next-line unicorn/no-array-for-each
+    // Load the custom decompressPlugins
+    if (result.config.decompressPlugins && result.config.decompressPlugins.length > 0) {
+      for (const plugin of result.config.decompressPlugins) {
+        plugins.push(require(plugin)());
+      }
+    }
+
     result.config.binaries.forEach(
       async (binary: {
         platform: "linux" | "darwin" | "win32";
@@ -59,18 +70,38 @@ export class Bindl extends Command {
           title: `downloading and extracting ${chalk.blue.underline(
             binary.url
           )}`,
+          skip: () => {
+            // If npm_config_arch is set, we only download the binary for the
+            // current platform and the arch set by npm_config_arch.
+            if (process.env.npm_config_arch) {
+              if (process.env.npm_config_arch !== binary.arch) {
+                return "npm_config_arch is set to a different arch";
+              }
+              // Check if current platform is the same as the binary platform
+              if (process.platform !== binary.platform) {
+                return "npm_config_arch is set and current platform is different from the binary platform";
+              }
+            }
+            return false
+          },
           task: async () =>
             download(
               binary.url,
               `./binaries/${binary.platform}/${binary.arch}`,
               {
                 extract: true,
-                filter: (file) =>
-                  Boolean(binary.files.some((f) => f.source === file.path)),
+                filter: (file) => {
+                  if (binary.files) {
+                    return Boolean(binary.files.find((f) => f.source === file.path))
+                  }
+                  return true
+                },
                 map: (file) => {
-                  const f = binary.files.find((f) => f.source === file.path);
-                  if (f) {
-                    file.path = f.target;
+                  if (binary.files) {
+                    const f = binary.files.find((f) => f.source === file.path);
+                    if (f) {
+                      file.path = f.target;
+                    }
                   }
 
                   return file;

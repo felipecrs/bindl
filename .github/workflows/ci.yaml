@@ -13,11 +13,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [10, 12, 14]
+        node-version: [14, 16, 18]
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: volta-cli/action@v1
+      - uses: actions/checkout@v3
+      - uses: volta-cli/action@v4
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
@@ -32,12 +32,12 @@ jobs:
     needs: test
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GH_TOKEN_SEMANTIC_RELEASE }}
-      - uses: volta-cli/action@v1
+          persist-credentials: false
+      - uses: volta-cli/action@v4
       - run: npm ci
       - run: npm run release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

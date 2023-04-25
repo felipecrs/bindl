@@ -33,9 +33,13 @@ USAGE
 
 You can find an example of config file [here](./test/res/bindl.config.js).
 
+You can also skip the downloads by setting the `BINDL_SKIP` environment variable to a truthy value.
+
 <!-- commands -->
-* [`bindl .`](#bindl-)
-* [`bindl version`](#bindl-version)
+- [bindl](#bindl)
+- [Usage](#usage)
+  - [`bindl .`](#bindl-)
+  - [`bindl version`](#bindl-version)
 
 ## `bindl .`
 
