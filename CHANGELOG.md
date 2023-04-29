@@ -1,3 +1,10 @@
+## [4.1.3](https://github.com/felipecrs/bindl/compare/v4.1.2...v4.1.3) (2023-04-29)
+
+
+### Bug Fixes
+
+* executing `bindl` asks to install `ts-node` ([#327](https://github.com/felipecrs/bindl/issues/327)) ([3287f0d](https://github.com/felipecrs/bindl/commit/3287f0dace07235d292d0f4e6b6e057d2340bb49))
+
 ## [4.1.2](https://github.com/felipecrs/bindl/compare/v4.1.1...v4.1.2) (2023-04-29)
 
 
