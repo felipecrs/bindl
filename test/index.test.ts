@@ -2,9 +2,8 @@ import * as execa from "execa";
 import * as shell from "shelljs";
 import * as tmp from "tmp";
 
-const bin = `${process.cwd()}/bin/dev`;
-
-const configPath = `${process.cwd()}/test/res/bindl.config.js`;
+const bin = `${process.cwd()}/src/index.ts`;
+const configPath = `${process.cwd()}/test/res/bindl.config.cjs`;
 
 jest.setTimeout(30_000);
 
@@ -13,15 +12,15 @@ beforeAll(() => {
 });
 
 describe("bindl", () => {
-  let dir: tmp.DirResult;
+  let directory: tmp.DirResult;
 
   beforeEach(async () => {
-    dir = tmp.dirSync({ unsafeCleanup: true });
-    shell.cd(dir.name);
+    directory = tmp.dirSync({ unsafeCleanup: true });
+    shell.cd(directory.name);
   });
 
   afterEach(async () => {
-    dir.removeCallback();
+    directory.removeCallback();
   });
 
   it("downloads shellcheck", async () => {
