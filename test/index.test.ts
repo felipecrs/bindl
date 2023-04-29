@@ -2,7 +2,7 @@ import * as execa from "execa";
 import * as shell from "shelljs";
 import * as tmp from "tmp";
 
-const bin = `${process.cwd()}/src/index.ts`;
+const bin = `${process.cwd()}/bindl`;
 const configPath = `${process.cwd()}/test/res/bindl.config.cjs`;
 
 jest.setTimeout(30_000);
