@@ -1,1 +1,7 @@
-src/index.ts
+#!/usr/bin/env bash
+
+# Get script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+readonly SCRIPT_DIR
+
+exec npx ts-node "${SCRIPT_DIR}/src/index.ts" "$@"

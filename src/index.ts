@@ -1,5 +1,3 @@
-#!/usr/bin/env -S npx ts-node
-
 import { Builtins, Cli } from "clipanion";
 import { MainCommand } from "./command";
 import { name, version } from "../package.json";

@@ -56,7 +56,7 @@
   "repository": "felipecrs/bindl",
   "scripts": {
     "build": "rimraf lib && tsc --build src",
-    "lint": "eslint . && prettier --check .",
+    "lint": "tsc --project src/tsconfig.json && eslint . && prettier --check .",
     "prepack": "npm run build",
     "test": "nyc jest",
     "posttest": "npm run lint"
