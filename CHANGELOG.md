@@ -1,3 +1,10 @@
+## [4.1.4](https://github.com/felipecrs/bindl/compare/v4.1.3...v4.1.4) (2023-04-29)
+
+
+### Bug Fixes
+
+* executing `bindl` throws syntax error ([#328](https://github.com/felipecrs/bindl/issues/328)) ([362b0b1](https://github.com/felipecrs/bindl/commit/362b0b11da6b1ee03c07e6838f737b4ad03b58e9))
+
 ## [4.1.3](https://github.com/felipecrs/bindl/compare/v4.1.2...v4.1.3) (2023-04-29)
 
 
