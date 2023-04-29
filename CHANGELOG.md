@@ -1,3 +1,16 @@
+## [4.1.2](https://github.com/felipecrs/bindl/compare/v4.1.1...v4.1.2) (2023-04-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* Types declarations are no longer included in the
+package. I believe no one was using them anyway, but if you were, please
+open an issue and I'll add them back.
+
+### Code Refactoring
+
+* migrate from `oclif` to `clipanion` ([#326](https://github.com/felipecrs/bindl/issues/326)) ([1682024](https://github.com/felipecrs/bindl/commit/168202423d9f8288d6dc71f167c6853819915649)), closes [#225](https://github.com/felipecrs/bindl/issues/225)
+
 ## [4.1.1](https://github.com/felipecrs/bindl/compare/v4.1.0...v4.1.1) (2023-04-25)
 
 
