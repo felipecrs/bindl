@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Builtins, Cli } from "clipanion";
 import { MainCommand } from "./command";
 import { name, version } from "../package.json";
