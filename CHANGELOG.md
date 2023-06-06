@@ -1,3 +1,11 @@
+## [4.1.6](https://github.com/felipecrs/bindl/compare/v4.1.5...v4.1.6) (2023-06-06)
+
+
+### Dependencies
+
+* **deps:** bump clipanion from 3.2.0 to 3.2.1 ([#351](https://github.com/felipecrs/bindl/issues/351)) ([202d8b9](https://github.com/felipecrs/bindl/commit/202d8b990244e28d2f919cb7e37ed2d9941e4a78))
+* **deps:** bump cosmiconfig from 8.1.3 to 8.2.0 ([#352](https://github.com/felipecrs/bindl/issues/352)) ([6783bde](https://github.com/felipecrs/bindl/commit/6783bdec8290ec4603a5fac4d82f37aedb2b1b9d))
+
 ## [4.1.5](https://github.com/felipecrs/bindl/compare/v4.1.4...v4.1.5) (2023-05-18)
 
 
