@@ -33,7 +33,7 @@ export class MainCommand extends Command {
     // Return early if BINDL_SKIP is set
     if (process.env.BINDL_SKIP) {
       this.context.stdout.write(
-        "Skipping download due to the BINDL_SKIP env var being set"
+        "Skipping download due to the BINDL_SKIP env var being set",
       );
       return;
     }
@@ -97,7 +97,7 @@ export class MainCommand extends Command {
             filter: (file) => {
               if (binary.files) {
                 return Boolean(
-                  binary.files.some((f) => f.source === file.path)
+                  binary.files.some((f) => f.source === file.path),
                 );
               }
 
