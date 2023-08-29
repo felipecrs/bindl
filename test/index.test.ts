@@ -57,6 +57,19 @@ describe("bindl", () => {
     ).toBeTruthy();
   });
 
+  it("downloads shellcheck remapping directory", async () => {
+    const result = await execa.command(
+      `${bin} --config ${configDirectory}/remap-directory.bindl.config.cjs`,
+    );
+    expect(result.stdout).toContain(`downloading and extracting`);
+    expect(result.exitCode).toBe(0);
+
+    expect(
+      shell.test("-f", "./binaries/linux/x64/directory/shellcheck"),
+    ).toBeTruthy();
+    expect(shell.test("-f", "./binaries/linux/x64/shellcheck")).toBeTruthy();
+  });
+
   it("downloads only linux-arm64 binary when npm_config_arch is set", async () => {
     const result = await execa.command(`${bin} --config ${configPath}`, {
       // eslint-disable-next-line camelcase

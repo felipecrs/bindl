@@ -102,7 +102,19 @@ export class MainCommand extends Command {
               filter: (file) => {
                 if (binary.files) {
                   return Boolean(
-                    binary.files.some((f) => f.source === file.path),
+                    binary.files.some((f) => {
+                      if (f.source === file.path) {
+                        return true;
+                      }
+                      // Compare by path. For example, if source is shellcheck/ and
+                      // file is shellcheck/LICENSE.txt, we want to return true.
+                      if (
+                        f.source.endsWith("/") &&
+                        file.path.startsWith(f.source)
+                      ) {
+                        return true;
+                      }
+                    }),
                   );
                 }
 
@@ -110,9 +122,26 @@ export class MainCommand extends Command {
               },
               map: (file) => {
                 if (binary.files) {
-                  const f = binary.files.find((f) => f.source === file.path);
+                  let remapDirectory = false;
+                  const f = binary.files.find((f) => {
+                    if (f.source === file.path) {
+                      return true;
+                    }
+                    // Compare by path. For example, if source is shellcheck/ and
+                    // target is directory/, and file is shellcheck/LICENSE.txt, we
+                    // want to map it to directory/LICENSE.txt.
+                    if (
+                      f.source.endsWith("/") &&
+                      file.path.startsWith(f.source)
+                    ) {
+                      remapDirectory = true;
+                      return true;
+                    }
+                  });
                   if (f) {
-                    file.path = f.target;
+                    file.path = remapDirectory
+                      ? file.path.replace(f.source, f.target)
+                      : f.target;
                   }
                 }
 
