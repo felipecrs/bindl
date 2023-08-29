@@ -3,7 +3,8 @@ import * as shell from "shelljs";
 import * as tmp from "tmp";
 
 const bin = `${process.cwd()}/bindl`;
-const configPath = `${process.cwd()}/test/res/bindl.config.cjs`;
+const configDirectory = `${process.cwd()}/test/res`;
+const configPath = `${configDirectory}/bindl.config.cjs`;
 
 jest.setTimeout(30_000);
 
@@ -24,7 +25,9 @@ describe("bindl", () => {
   });
 
   it("downloads shellcheck", async () => {
-    const result = await execa.command(`${bin} --config ${configPath}`);
+    const result = await execa.command(
+      `${bin} --config ${configDirectory}/bindl.config.cjs`,
+    );
     expect(result.stdout).toContain(`downloading and extracting`);
     expect(result.exitCode).toBe(0);
 
@@ -40,6 +43,18 @@ describe("bindl", () => {
     ).toBeTruthy();
     expect(shell.test("-f", "./binaries/win32/ia32/LICENSE.txt")).toBeTruthy();
     expect(shell.test("-f", "./binaries/win32/ia32/README.txt")).toBeTruthy();
+  });
+
+  it("downloads shellcheck to alternative directory", async () => {
+    const result = await execa.command(
+      `${bin} --config ${configDirectory}/alternative-directory.bindl.config.cjs`,
+    );
+    expect(result.stdout).toContain(`downloading and extracting`);
+    expect(result.exitCode).toBe(0);
+
+    expect(
+      shell.test("-f", "./binaries-test/linux/x64/shellcheck"),
+    ).toBeTruthy();
   });
 
   it("downloads only linux-arm64 binary when npm_config_arch is set", async () => {

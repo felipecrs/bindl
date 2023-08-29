@@ -67,6 +67,8 @@ export class MainCommand extends Command {
       }
     }
 
+    const downloadDirectory = result.config.downloadDirectory ?? "./binaries";
+
     for (const binary of result.config.binaries as {
       platform: "linux" | "darwin" | "win32";
       arch: "x64" | "x86";
@@ -92,34 +94,38 @@ export class MainCommand extends Command {
           return false;
         },
         task: async () =>
-          download(binary.url, `./binaries/${binary.platform}/${binary.arch}`, {
-            extract: true,
-            filter: (file) => {
-              if (binary.files) {
-                return Boolean(
-                  binary.files.some((f) => f.source === file.path),
-                );
-              }
-
-              return true;
-            },
-            map: (file) => {
-              if (binary.files) {
-                const f = binary.files.find((f) => f.source === file.path);
-                if (f) {
-                  file.path = f.target;
+          download(
+            binary.url,
+            `${downloadDirectory}/${binary.platform}/${binary.arch}`,
+            {
+              extract: true,
+              filter: (file) => {
+                if (binary.files) {
+                  return Boolean(
+                    binary.files.some((f) => f.source === file.path),
+                  );
                 }
-              }
 
-              return file;
+                return true;
+              },
+              map: (file) => {
+                if (binary.files) {
+                  const f = binary.files.find((f) => f.source === file.path);
+                  if (f) {
+                    file.path = f.target;
+                  }
+                }
+
+                return file;
+              },
+              plugins,
             },
-            plugins,
-          }),
+          ),
       });
     }
 
     try {
-      await rimraf("./binaries");
+      await rimraf(downloadDirectory);
       await tasks.run();
     } catch {
       return 1;
