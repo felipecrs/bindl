@@ -1,3 +1,11 @@
+## [4.2.0](https://github.com/felipecrs/bindl/compare/v4.1.6...v4.2.0) (2023-08-29)
+
+
+### Features
+
+* allow to remap directories ([f59d6da](https://github.com/felipecrs/bindl/commit/f59d6da77b370fa7af01faa7615859c5b574b752))
+* allow to specify downloadDirectory ([c33860a](https://github.com/felipecrs/bindl/commit/c33860a4a122897d022b8bc06aa62a8543b57b6b))
+
 ## [4.1.6](https://github.com/felipecrs/bindl/compare/v4.1.5...v4.1.6) (2023-06-06)
 
 
