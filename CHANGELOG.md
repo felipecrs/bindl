@@ -1,3 +1,10 @@
+## [4.2.4](https://github.com/felipecrs/bindl/compare/v4.2.3...v4.2.4) (2023-10-04)
+
+
+### Dependencies
+
+* **deps:** bump rimraf from 5.0.1 to 5.0.5 ([#449](https://github.com/felipecrs/bindl/issues/449)) ([dd3ff7e](https://github.com/felipecrs/bindl/commit/dd3ff7e0e6f56aa99347560a13e55d4e25325b2e))
+
 ## [4.2.3](https://github.com/felipecrs/bindl/compare/v4.2.2...v4.2.3) (2023-09-16)
 
 
