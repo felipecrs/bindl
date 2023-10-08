@@ -1,15 +1,15 @@
 /* eslint-env node */
 
-const version = "v0.8.0";
-const shellcheckReleaseUrl = `https://github.com/koalaman/shellcheck/releases/download/${version}/shellcheck-${version}`;
+const version = "v0.9.0";
+const shellcheckReleaseUrl = `https://github.com/vscode-shellcheck/shellcheck-binaries/releases/download/${version}/shellcheck-${version}`;
 
 module.exports = {
-  decompressPlugins: ["@felipecrs/decompress-tarxz"],
+  // decompressPlugins: ["@felipecrs/decompress-tarxz"],
   binaries: [
     {
       platform: "linux",
       arch: "x64",
-      url: `${shellcheckReleaseUrl}.linux.x86_64.tar.xz`,
+      url: `${shellcheckReleaseUrl}.linux.x86_64.tar.gz`,
       files: [
         {
           source: `shellcheck-${version}/shellcheck`,
@@ -53,12 +53,12 @@ module.exports = {
     {
       platform: "win32",
       arch: "ia32",
-      url: `${shellcheckReleaseUrl}.zip`,
+      url: `${shellcheckReleaseUrl}.windows.x86_64.tar.xz`,
     },
     {
       platform: "win32",
       arch: "x64",
-      url: `${shellcheckReleaseUrl}.zip`,
+      url: `${shellcheckReleaseUrl}.windows.x86_64.tar.xz`,
       files: [{ source: `shellcheck.exe`, target: "shellcheck.exe" }],
     },
   ],

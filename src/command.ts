@@ -1,11 +1,19 @@
 import { Command, Option } from "clipanion";
 import { cosmiconfig } from "cosmiconfig";
 import { rimraf } from "rimraf";
-import * as download from "download";
-import * as Listr from "listr";
-// eslint-disable-next-line unicorn/import-style
-import * as chalk from "chalk";
-import { description } from "../package.json";
+import { Listr } from "listr2";
+import chalk from "chalk";
+import { description } from "./package.js";
+// @ts-expect-error
+import download from "@xhmikosr/downloader";
+// @ts-expect-error
+import decompressTar from "@xhmikosr/decompress-tar";
+// @ts-expect-error
+import decompressTarbz2 from "@xhmikosr/decompress-tarbz2";
+// @ts-expect-error
+import decompressTargz from "@xhmikosr/decompress-targz";
+// @ts-expect-error
+import decompressUnzip from "@xhmikosr/decompress-unzip";
 
 export class MainCommand extends Command {
   config = Option.String("-c,--config", {
@@ -33,7 +41,7 @@ export class MainCommand extends Command {
     // Return early if BINDL_SKIP is set
     if (process.env.BINDL_SKIP) {
       this.context.stdout.write(
-        "Skipping download due to the BINDL_SKIP env var being set",
+        "Skipping download due to the BINDL_SKIP env var being set"
       );
       return;
     }
@@ -48,13 +56,13 @@ export class MainCommand extends Command {
       throw new Error("Not able to load the configuration file.");
     }
 
-    const tasks = new Listr({ concurrent: true });
+    const tasks = new Listr([], { concurrent: true });
 
     const plugins = [
-      importPlugin("decompress-tar"),
-      importPlugin("decompress-tarbz2"),
-      importPlugin("decompress-targz"),
-      importPlugin("decompress-unzip"),
+      decompressTar(),
+      decompressTarbz2(),
+      decompressTargz(),
+      decompressUnzip(),
     ];
 
     // Load the custom decompressPlugins
@@ -63,7 +71,7 @@ export class MainCommand extends Command {
       result.config.decompressPlugins.length > 0
     ) {
       for (const plugin of result.config.decompressPlugins) {
-        plugins.push(importPlugin(plugin));
+        plugins.push((await import(plugin))());
       }
     }
 
@@ -99,56 +107,58 @@ export class MainCommand extends Command {
             `${downloadDirectory}/${binary.platform}/${binary.arch}`,
             {
               extract: true,
-              filter: (file) => {
-                if (binary.files) {
-                  return Boolean(
-                    binary.files.some((f) => {
+              decompress: {
+                filter: (file: any) => {
+                  if (binary.files) {
+                    return Boolean(
+                      binary.files.some((f) => {
+                        if (f.source === file.path) {
+                          return true;
+                        }
+                        // Compare by path. For example, if source is shellcheck/ and
+                        // file is shellcheck/LICENSE.txt, we want to return true.
+                        if (
+                          f.source.endsWith("/") &&
+                          file.path.startsWith(f.source)
+                        ) {
+                          return true;
+                        }
+                      })
+                    );
+                  }
+
+                  return true;
+                },
+                map: (file: any) => {
+                  if (binary.files) {
+                    let remapDirectory = false;
+                    const f = binary.files.find((f) => {
                       if (f.source === file.path) {
                         return true;
                       }
                       // Compare by path. For example, if source is shellcheck/ and
-                      // file is shellcheck/LICENSE.txt, we want to return true.
+                      // target is directory/, and file is shellcheck/LICENSE.txt, we
+                      // want to map it to directory/LICENSE.txt.
                       if (
                         f.source.endsWith("/") &&
                         file.path.startsWith(f.source)
                       ) {
+                        remapDirectory = true;
                         return true;
                       }
-                    }),
-                  );
-                }
-
-                return true;
-              },
-              map: (file) => {
-                if (binary.files) {
-                  let remapDirectory = false;
-                  const f = binary.files.find((f) => {
-                    if (f.source === file.path) {
-                      return true;
+                    });
+                    if (f) {
+                      file.path = remapDirectory
+                        ? file.path.replace(f.source, f.target)
+                        : f.target;
                     }
-                    // Compare by path. For example, if source is shellcheck/ and
-                    // target is directory/, and file is shellcheck/LICENSE.txt, we
-                    // want to map it to directory/LICENSE.txt.
-                    if (
-                      f.source.endsWith("/") &&
-                      file.path.startsWith(f.source)
-                    ) {
-                      remapDirectory = true;
-                      return true;
-                    }
-                  });
-                  if (f) {
-                    file.path = remapDirectory
-                      ? file.path.replace(f.source, f.target)
-                      : f.target;
                   }
-                }
 
-                return file;
+                  return file;
+                },
+                plugins,
               },
-              plugins,
-            },
+            }
           ),
       });
     }
@@ -161,8 +171,3 @@ export class MainCommand extends Command {
     }
   }
 }
-
-const importPlugin = (plugin: string) => {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires, unicorn/prefer-module
-  return require(plugin)();
-};
