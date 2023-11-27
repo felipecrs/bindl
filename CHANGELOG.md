@@ -1,3 +1,10 @@
+## [4.2.5](https://github.com/felipecrs/bindl/compare/v4.2.4...v4.2.5) (2023-11-27)
+
+
+### Dependencies
+
+* **deps:** bump cosmiconfig from 8.3.6 to 9.0.0 ([#494](https://github.com/felipecrs/bindl/issues/494)) ([4a53e60](https://github.com/felipecrs/bindl/commit/4a53e6098dfbf404ddcc2973c6485e2dd3b25de0))
+
 ## [4.2.4](https://github.com/felipecrs/bindl/compare/v4.2.3...v4.2.4) (2023-10-04)
 
 
