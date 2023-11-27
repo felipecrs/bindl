@@ -38,7 +38,9 @@ export class MainCommand extends Command {
       return;
     }
 
-    const explorer = cosmiconfig(this.cli.binaryLabel as string);
+    const explorer = cosmiconfig(this.cli.binaryLabel as string, {
+      searchStrategy: "global",
+    });
 
     const result = this.config
       ? await explorer.load(this.config)
