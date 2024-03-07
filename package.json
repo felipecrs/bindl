@@ -27,7 +27,7 @@
     "@types/node": "^14.18.43",
     "@types/shelljs": "^0.8.12",
     "@types/tmp": "^0.2.3",
-    "@typescript-eslint/eslint-plugin": "^6.5.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^6.5.0",
     "conventional-changelog-conventionalcommits": "^7.0.2",
     "eslint": "^8.39.0",
