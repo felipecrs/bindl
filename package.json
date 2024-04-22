@@ -6,7 +6,7 @@
   "bin": "lib/index.js",
   "bugs": "https://github.com/felipecrs/bindl/issues",
   "dependencies": {
-    "chalk": "^4.1.2",
+    "chalk": "^5.0.0",
     "clipanion": "^3.2.0",
     "cosmiconfig": "^9.0.0",
     "decompress-tar": "^4.1.1",
