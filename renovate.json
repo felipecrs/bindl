@@ -2,12 +2,26 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
   "dependencyDashboard": true,
+  "semanticCommits": "enabled",
   "packageRules": [
     {
       "description": "Automerge non-major dev updates",
       "matchDepTypes": ["devDependencies"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
+    },
+    {
+      "matchDepTypes": ["dependencies"],
+      "semanticCommitType": "build"
+    },
+    {
+      "matchDepTypes": ["devDependencies"],
+      "semanticCommitType": "build",
+      "semanticCommitScope": "deps-dev"
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "semanticCommitType": "ci"
     }
   ]
 }
