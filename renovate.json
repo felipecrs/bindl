@@ -6,7 +6,7 @@
   "packageRules": [
     {
       "description": "Automerge non-major dev updates",
-      "matchDepTypes": ["devDependencies"],
+      "matchDepTypes": ["devDependencies", "volta", "actions"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
     },
@@ -15,12 +15,12 @@
       "semanticCommitType": "build"
     },
     {
-      "matchDepTypes": ["devDependencies"],
+      "matchDepTypes": ["devDependencies", "volta"],
       "semanticCommitType": "build",
       "semanticCommitScope": "deps-dev"
     },
     {
-      "matchManagers": ["github-actions"],
+      "matchDepTypes": ["actions"],
       "semanticCommitType": "ci"
     },
     {
