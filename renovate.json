@@ -24,8 +24,7 @@
       "semanticCommitType": "ci"
     },
     {
-      "description": "@types/node should follow engines compatibility",
-      "matchDepNames": "@types/node",
+      "matchDepNames": ["node", "@types/node"],
       "matchUpdateTypes": ["major"],
       "enabled": false
     }
