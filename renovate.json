@@ -3,6 +3,9 @@
   "extends": ["config:recommended"],
   "dependencyDashboard": true,
   "semanticCommits": "enabled",
+  "lockFileMaintenance": {
+    "enabled": true
+  },
   "packageRules": [
     {
       "description": "Automerge non-major dev updates",
