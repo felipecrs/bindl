@@ -32,7 +32,7 @@ export class MainCommand extends Command {
 
   async execute() {
     // Return early if BINDL_SKIP is set
-    if (process.env.BINDL_SKIP) {
+    if (process.env.BINDL_SKIP === "true" || process.env.BINDL_SKIP === "1") {
       this.context.stdout.write(
         "Skipping download due to the BINDL_SKIP env var being set",
       );
@@ -81,6 +81,23 @@ export class MainCommand extends Command {
       tasks.add({
         title: `downloading and extracting ${chalk.blue.underline(binary.url)}`,
         skip: () => {
+          // If BINDL_CURRENT_ONLY is set, we only download the binary for the
+          // current platform and arch.
+          if (
+            process.env.BINDL_CURRENT_ONLY === "true" ||
+            process.env.BINDL_CURRENT_ONLY === "1"
+          ) {
+            if (process.platform !== binary.platform) {
+              return "BINDL_CURRENT_ONLY is set and current platform is different from the binary platform";
+            }
+
+            if (process.arch !== binary.arch) {
+              return "BINDL_CURRENT_ONLY is set and current arch is different from the binary arch";
+            }
+
+            return false;
+          }
+
           // If npm_config_arch is set, we only download the binary for the
           // current platform and the arch set by npm_config_arch.
           if (process.env.npm_config_arch) {

@@ -52,8 +52,12 @@ However, some environment variables can be used to tweak the behavior of `bindl`
 
 When the `BINDL_SKIP` environment variable is set to a truthy like `1` or `true`, `bindl` will skip downloading anything.
 
+### `BINDL_CURRENT_PLATFORM`
+
+When the `BINDL_CURRENT_ONLY` environment variable is set to a truthy like `1` or `true`, `bindl` will only download the packages that match the current platform and architecture.
+
 ### `npm_config_arch`
 
-When the `npm_config_arch` environment variable is set, `bindl` will only download the packages that match the given architecture for the current architecture.
+When the `npm_config_arch` environment variable is set, `bindl` will only download the packages that match the given architecture for the current platform.
 
 For example, if you set `npm_config_arch=x64` and you are running on Linux, `bindl` will only download the packages that match the `linux` platform and the `x64` architecture, skipping all other packages.
