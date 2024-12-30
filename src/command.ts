@@ -1,11 +1,12 @@
+import chalk from "chalk";
 import { Command, Option } from "clipanion";
 import { cosmiconfig } from "cosmiconfig";
+import download from "download";
+import { Listr } from "listr2";
 import { rimraf } from "rimraf";
-import * as download from "download";
-import * as Listr from "listr";
-// eslint-disable-next-line unicorn/import-style
-import * as chalk from "chalk";
-import { description } from "../package.json";
+import packageJson from "../package.json" with { type: "json" };
+
+const { description } = packageJson;
 
 export class MainCommand extends Command {
   config = Option.String("-c,--config", {
@@ -15,7 +16,7 @@ export class MainCommand extends Command {
   static usage = Command.Usage({
     description: description,
     details: `
-        The config will be read from any valid config file in the current directory. The configuration file can be defined using all the extensions and names accepted by **cosmiconfig** such as \`bindl.config.cjs\`.
+        The config will be read from any valid config file in the current directory. The configuration file can be defined using all the extensions and names accepted by **cosmiconfig** such as \`bindl.config.js\`.
       `,
     examples: [
       [
@@ -23,8 +24,8 @@ export class MainCommand extends Command {
         "$0",
       ],
       [
-        "Download binaries looking for the config file at `./dir/bindl.config.cjs`",
-        "$0 --config ./dir/bindl.config.cjs",
+        "Download binaries looking for the config file at `./dir/bindl.config.js`",
+        "$0 --config ./dir/bindl.config.js",
       ],
     ],
   });
@@ -50,13 +51,13 @@ export class MainCommand extends Command {
       throw new Error("Not able to load the configuration file.");
     }
 
-    const tasks = new Listr({ concurrent: true });
+    const tasks = new Listr([], { concurrent: true });
 
     const plugins = [
-      importPlugin("decompress-tar"),
-      importPlugin("decompress-tarbz2"),
-      importPlugin("decompress-targz"),
-      importPlugin("decompress-unzip"),
+      await importPlugin("decompress-tar"),
+      await importPlugin("decompress-tarbz2"),
+      await importPlugin("decompress-targz"),
+      await importPlugin("decompress-unzip"),
     ];
 
     // Load the custom decompressPlugins
@@ -65,7 +66,7 @@ export class MainCommand extends Command {
       result.config.decompressPlugins.length > 0
     ) {
       for (const plugin of result.config.decompressPlugins) {
-        plugins.push(importPlugin(plugin));
+        plugins.push(await importPlugin(plugin));
       }
     }
 
@@ -164,7 +165,6 @@ export class MainCommand extends Command {
   }
 }
 
-const importPlugin = (plugin: string) => {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires, unicorn/prefer-module
-  return require(plugin)();
-};
+async function importPlugin(plugin: string) {
+  return (await import(plugin)).default();
+}

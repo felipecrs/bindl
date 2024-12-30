@@ -15,7 +15,7 @@ Download and extract binaries from compressed packages.
 $ npm install --global bindl
 
 $ bindl --help
-Downloads and extracts binaries from compressed packages using a config file.
+Downloads and extracts binaries from compressed packages using a config file
 
 ━━━ Usage ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -29,18 +29,18 @@ $ bindl
 
 The config will be read from any valid config file in the current directory. The
 configuration file can be defined using all the extensions and names accepted by
-**cosmiconfig** such as `bindl.config.cjs`.
+**cosmiconfig** such as `bindl.config.js`.
 
 ━━━ Examples ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Download binaries looking for the config file in the current directory
   $ bindl
 
-Download binaries looking for the config file at `./dir/bindl.config.cjs`
-  $ bindl --config ./dir/bindl.config.cjs
+Download binaries looking for the config file at `./dir/bindl.config.js`
+  $ bindl --config ./dir/bindl.config.js
 ```
 
-You can find an example of a config file [here](./test/res/bindl.config.cjs).
+You can find an example of a config file [here](./test/res/bindl.config.js).
 
 ## Environment variables
 
