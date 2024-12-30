@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "rootDir": ".",
-    "outDir": ".",
-    "resolveJsonModule": true,
-    "composite": true
-  },
-  "files": ["package.json"]
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "lib",
+    "strict": true,
+    "resolveJsonModule": true
+  }
 }

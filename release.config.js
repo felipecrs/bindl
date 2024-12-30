@@ -1,5 +1,7 @@
-/* eslint-env node */
-module.exports = {
+/**
+ * @type {import('semantic-release').GlobalConfig}
+ */
+export default {
   plugins: [
     [
       "@semantic-release/commit-analyzer",
