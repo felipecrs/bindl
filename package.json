@@ -1,7 +1,7 @@
 {
   "name": "bindl",
   "description": "Downloads and extracts binaries from compressed packages using a config file",
-  "version": "4.2.5",
+  "version": "0.0.0-development",
   "author": "Felipe Santos @felipecrs",
   "bin": "lib/index.js",
   "bugs": "https://github.com/felipecrs/bindl/issues",
@@ -22,8 +22,6 @@
   },
   "devDependencies": {
     "@felipecrs/decompress-tarxz": "^4.0.0",
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
     "@types/download": "^8.0.2",
     "@types/node": "^20.17.10",
     "c8": "^10.1.3",
