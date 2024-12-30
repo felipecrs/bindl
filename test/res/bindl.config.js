@@ -1,4 +1,4 @@
-const version = "v0.8.0";
+const version = "v0.10.0";
 const shellcheckReleaseUrl = `https://github.com/koalaman/shellcheck/releases/download/${version}/shellcheck-${version}`;
 
 export default {
@@ -49,15 +49,27 @@ export default {
       ],
     },
     {
-      platform: "win32",
-      arch: "ia32",
-      url: `${shellcheckReleaseUrl}.zip`,
+      platform: "darwin",
+      arch: "arm64",
+      url: `${shellcheckReleaseUrl}.darwin.aarch64.tar.xz`,
+      files: [
+        {
+          source: `shellcheck-${version}/shellcheck`,
+          target: "shellcheck",
+        },
+      ],
     },
     {
       platform: "win32",
       arch: "x64",
       url: `${shellcheckReleaseUrl}.zip`,
       files: [{ source: `shellcheck.exe`, target: "shellcheck.exe" }],
+    },
+    {
+      platform: "win32",
+      arch: "arm64",
+      url: `${shellcheckReleaseUrl}.zip`,
+      // not using "files" to exercise a test
     },
   ],
 };

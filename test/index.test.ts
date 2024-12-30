@@ -44,12 +44,13 @@ describe("bindl", () => {
     expect(await fs.exists(`./binaries/linux/arm/shellcheck`)).toBeTruthy();
     expect(await fs.exists(`./binaries/linux/arm64/shellcheck`)).toBeTruthy();
     expect(await fs.exists(`./binaries/darwin/x64/shellcheck`)).toBeTruthy();
+    expect(await fs.exists(`./binaries/darwin/arm64/shellcheck`)).toBeTruthy();
     expect(await fs.exists(`./binaries/win32/x64/shellcheck.exe`)).toBeTruthy();
     expect(
-      await fs.exists(`./binaries/win32/ia32/shellcheck.exe`),
+      await fs.exists(`./binaries/win32/arm64/shellcheck.exe`),
     ).toBeTruthy();
-    expect(await fs.exists(`./binaries/win32/ia32/LICENSE.txt`)).toBeTruthy();
-    expect(await fs.exists(`./binaries/win32/ia32/README.txt`)).toBeTruthy();
+    expect(await fs.exists(`./binaries/win32/arm64/LICENSE.txt`)).toBeTruthy();
+    expect(await fs.exists(`./binaries/win32/arm64/README.txt`)).toBeTruthy();
   });
 
   it("downloads shellcheck to alternative directory", async () => {

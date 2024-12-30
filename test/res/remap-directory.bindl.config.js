@@ -1,4 +1,4 @@
-const version = "v0.8.0";
+const version = "v0.10.0";
 const shellcheckReleaseUrl = `https://github.com/koalaman/shellcheck/releases/download/${version}/shellcheck-${version}`;
 
 export default {
