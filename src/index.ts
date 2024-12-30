@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 
 import { Builtins, Cli } from "clipanion";
-import packageJson from "../package.json" with { type: "json" };
 import { MainCommand } from "./command.js";
-
-const { name, version } = packageJson;
+import { name, version } from "./package.js";
 
 const cli = new Cli({
   binaryLabel: name,

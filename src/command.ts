@@ -4,9 +4,7 @@ import { cosmiconfig } from "cosmiconfig";
 import download from "download";
 import { Listr } from "listr2";
 import { rimraf } from "rimraf";
-import packageJson from "../package.json" with { type: "json" };
-
-const { description } = packageJson;
+import { description } from "./package.js";
 
 export class MainCommand extends Command {
   config = Option.String("-c,--config", {
