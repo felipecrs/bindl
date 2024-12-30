@@ -1,77 +1,84 @@
-import * as execa from "execa";
-import * as shell from "shelljs";
-import * as tmp from "tmp";
+import { execaCommand } from "execa";
+import {
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
+import { $, cd, fs, tmpdir } from "zx";
 
-const bin = `${process.cwd()}/bindl`;
-const configDirectory = `${process.cwd()}/test/res`;
-const configPath = `${configDirectory}/bindl.config.cjs`;
+const repoDir = `${import.meta.dirname}/..`;
+const bin = `${repoDir}/bindl`;
+const configDirectory = `${repoDir}/test/res`;
+const configPath = `${configDirectory}/bindl.config.js`;
 
-jest.setTimeout(30_000);
+vi.setConfig({ testTimeout: 30000 });
 
 beforeAll(() => {
   process.env = Object.assign(process.env, { FORCE_COLOR: 0 });
 });
 
 describe("bindl", () => {
-  let directory: tmp.DirResult;
+  let tmpDir: string;
 
   beforeEach(async () => {
-    directory = tmp.dirSync({ unsafeCleanup: true });
-    shell.cd(directory.name);
+    tmpDir = tmpdir();
+    cd(tmpDir);
   });
 
   afterEach(async () => {
-    directory.removeCallback();
+    await $`rm -rf ${tmpDir}`;
   });
 
   it("downloads shellcheck", async () => {
-    const result = await execa.command(
-      `${bin} --config ${configDirectory}/bindl.config.cjs`,
+    const result = await execaCommand(
+      `${bin} --config ${configDirectory}/bindl.config.js`,
     );
     expect(result.stdout).toContain(`downloading and extracting`);
     expect(result.exitCode).toBe(0);
 
-    expect(shell.test("-f", "./binaries/linux/x64/shellcheck")).toBeTruthy();
-    expect(shell.test("-f", "./binaries/linux/arm/shellcheck")).toBeTruthy();
-    expect(shell.test("-f", "./binaries/linux/arm64/shellcheck")).toBeTruthy();
-    expect(shell.test("-f", "./binaries/darwin/x64/shellcheck")).toBeTruthy();
+    expect(await fs.exists(`./binaries/linux/x64/shellcheck`)).toBeTruthy();
+    expect(await fs.exists(`./binaries/linux/arm/shellcheck`)).toBeTruthy();
+    expect(await fs.exists(`./binaries/linux/arm64/shellcheck`)).toBeTruthy();
+    expect(await fs.exists(`./binaries/darwin/x64/shellcheck`)).toBeTruthy();
+    expect(await fs.exists(`./binaries/win32/x64/shellcheck.exe`)).toBeTruthy();
     expect(
-      shell.test("-f", "./binaries/win32/x64/shellcheck.exe"),
+      await fs.exists(`./binaries/win32/ia32/shellcheck.exe`),
     ).toBeTruthy();
-    expect(
-      shell.test("-f", "./binaries/win32/ia32/shellcheck.exe"),
-    ).toBeTruthy();
-    expect(shell.test("-f", "./binaries/win32/ia32/LICENSE.txt")).toBeTruthy();
-    expect(shell.test("-f", "./binaries/win32/ia32/README.txt")).toBeTruthy();
+    expect(await fs.exists(`./binaries/win32/ia32/LICENSE.txt`)).toBeTruthy();
+    expect(await fs.exists(`./binaries/win32/ia32/README.txt`)).toBeTruthy();
   });
 
   it("downloads shellcheck to alternative directory", async () => {
-    const result = await execa.command(
-      `${bin} --config ${configDirectory}/alternative-directory.bindl.config.cjs`,
+    const result = await execaCommand(
+      `${bin} --config ${configDirectory}/alternative-directory.bindl.config.js`,
     );
     expect(result.stdout).toContain(`downloading and extracting`);
     expect(result.exitCode).toBe(0);
 
     expect(
-      shell.test("-f", "./binaries-test/linux/x64/shellcheck"),
+      await fs.exists("./binaries-test/linux/x64/shellcheck"),
     ).toBeTruthy();
   });
 
   it("downloads shellcheck remapping directory", async () => {
-    const result = await execa.command(
-      `${bin} --config ${configDirectory}/remap-directory.bindl.config.cjs`,
+    const result = await execaCommand(
+      `${bin} --config ${configDirectory}/remap-directory.bindl.config.js`,
     );
     expect(result.stdout).toContain(`downloading and extracting`);
     expect(result.exitCode).toBe(0);
 
     expect(
-      shell.test("-f", "./binaries/linux/x64/directory/shellcheck"),
+      await fs.exists("./binaries/linux/x64/directory/shellcheck"),
     ).toBeTruthy();
-    expect(shell.test("-f", "./binaries/linux/x64/shellcheck")).toBeTruthy();
+    expect(await fs.exists("./binaries/linux/x64/shellcheck")).toBeTruthy();
   });
 
   it("downloads only linux-arm64 binary when npm_config_arch is set", async () => {
-    const result = await execa.command(`${bin} --config ${configPath}`, {
+    const result = await execaCommand(`${bin} --config ${configPath}`, {
       // eslint-disable-next-line camelcase
       env: { npm_config_arch: "x64" },
     });
@@ -80,16 +87,14 @@ describe("bindl", () => {
 
     switch (process.platform) {
       case "linux": {
-        expect(
-          shell.test("-f", "./binaries/linux/x64/shellcheck"),
-        ).toBeTruthy();
+        expect(await fs.exists("./binaries/linux/x64/shellcheck")).toBeTruthy();
 
         break;
       }
 
       case "darwin": {
         expect(
-          shell.test("-f", "./binaries/darwin/x64/shellcheck"),
+          await fs.exists("./binaries/darwin/x64/shellcheck"),
         ).toBeTruthy();
 
         break;
@@ -97,7 +102,7 @@ describe("bindl", () => {
 
       case "win32": {
         expect(
-          shell.test("-f", "./binaries/win32/x64/shellcheck.exe"),
+          await fs.exists("./binaries/win32/x64/shellcheck.exe"),
         ).toBeTruthy();
 
         break;
@@ -105,18 +110,16 @@ describe("bindl", () => {
       // No default
     }
 
-    expect(shell.test("-f", "./binaries/linux/arm/shellcheck")).toBeFalsy();
-    expect(shell.test("-f", "./binaries/linux/arm64/shellcheck")).toBeFalsy();
-    expect(shell.test("-f", "./binaries/win32/x64/shellcheck.exe")).toBeFalsy();
-    expect(
-      shell.test("-f", "./binaries/win32/ia32/shellcheck.exe"),
-    ).toBeFalsy();
-    expect(shell.test("-f", "./binaries/win32/ia32/LICENSE.txt")).toBeFalsy();
-    expect(shell.test("-f", "./binaries/win32/ia32/README.txt")).toBeFalsy();
+    expect(await fs.exists("./binaries/linux/arm/shellcheck")).toBeFalsy();
+    expect(await fs.exists("./binaries/linux/arm64/shellcheck")).toBeFalsy();
+    expect(await fs.exists("./binaries/win32/x64/shellcheck.exe")).toBeFalsy();
+    expect(await fs.exists("./binaries/win32/ia32/shellcheck.exe")).toBeFalsy();
+    expect(await fs.exists("./binaries/win32/ia32/LICENSE.txt")).toBeFalsy();
+    expect(await fs.exists("./binaries/win32/ia32/README.txt")).toBeFalsy();
   });
 
   it("downloads nothing when BINDL_SKIP is set", async () => {
-    const result = await execa.command(`${bin} --config ${configPath}`, {
+    const result = await execaCommand(`${bin} --config ${configPath}`, {
       env: { BINDL_SKIP: "true" },
     });
     expect(result.stdout).toContain(`Skipping`);
