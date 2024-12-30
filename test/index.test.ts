@@ -10,27 +10,27 @@ import {
 } from "vitest";
 import { $, cd, fs, tmpdir } from "zx";
 
-const repoDir = `${import.meta.dirname}/..`;
-const bin = `${repoDir}/bindl`;
-const configDirectory = `${repoDir}/test/res`;
+const repoDirectory = `${import.meta.dirname}/..`;
+const bin = `${repoDirectory}/bindl`;
+const configDirectory = `${repoDirectory}/test/res`;
 const configPath = `${configDirectory}/bindl.config.js`;
 
-vi.setConfig({ testTimeout: 30000 });
+vi.setConfig({ testTimeout: 30_000 });
 
 beforeAll(() => {
   process.env = Object.assign(process.env, { FORCE_COLOR: 0 });
 });
 
 describe("bindl", () => {
-  let tmpDir: string;
+  let temporaryDirectory: string;
 
   beforeEach(async () => {
-    tmpDir = tmpdir();
-    cd(tmpDir);
+    temporaryDirectory = tmpdir();
+    cd(temporaryDirectory);
   });
 
   afterEach(async () => {
-    await $`rm -rf ${tmpDir}`;
+    await $`rm -rf ${temporaryDirectory}`;
   });
 
   it("downloads shellcheck", async () => {
