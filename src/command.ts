@@ -12,7 +12,7 @@ export class MainCommand extends Command {
   });
 
   static usage = Command.Usage({
-    description: description,
+    description,
     details: `
         The config will be read from any valid config file in the current directory. The configuration file can be defined using all the extensions and names accepted by **cosmiconfig** such as \`bindl.config.js\`.
       `,
@@ -132,6 +132,7 @@ export class MainCommand extends Command {
                       ) {
                         return true;
                       }
+                      return false;
                     }),
                   );
                 }
@@ -155,6 +156,7 @@ export class MainCommand extends Command {
                       remapDirectory = true;
                       return true;
                     }
+                    return false;
                   });
                   if (f) {
                     file.path = remapDirectory
@@ -181,5 +183,6 @@ export class MainCommand extends Command {
 }
 
 async function importPlugin(plugin: string) {
-  return (await import(plugin)).default();
+  const { default: importedPlugin } = await import(plugin);
+  return importedPlugin();
 }
