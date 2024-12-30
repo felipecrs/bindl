@@ -77,39 +77,30 @@ describe("bindl", () => {
     expect(await fs.exists("./binaries/linux/x64/shellcheck")).toBeTruthy();
   });
 
+  it("downloads only current binary when BINDL_CURRENT_ONLY is set", async () => {
+    const result = await execaCommand(`${bin} --config ${configPath}`, {
+      env: { BINDL_CURRENT_ONLY: "true" },
+    });
+    expect(result.stdout).toContain(`downloading and extracting`);
+    expect(result.exitCode).toBe(0);
+
+    expect(await fs.exists(`./binaries/linux/x64/shellcheck`)).toBeTruthy();
+    expect(await fs.exists("./binaries/linux/arm/shellcheck")).toBeFalsy();
+    expect(await fs.exists("./binaries/linux/arm64/shellcheck")).toBeFalsy();
+    expect(await fs.exists("./binaries/win32/x64/shellcheck.exe")).toBeFalsy();
+    expect(await fs.exists("./binaries/win32/ia32/shellcheck.exe")).toBeFalsy();
+    expect(await fs.exists("./binaries/win32/ia32/LICENSE.txt")).toBeFalsy();
+    expect(await fs.exists("./binaries/win32/ia32/README.txt")).toBeFalsy();
+  });
+
   it("downloads only linux-arm64 binary when npm_config_arch is set", async () => {
     const result = await execaCommand(`${bin} --config ${configPath}`, {
-      // eslint-disable-next-line camelcase
       env: { npm_config_arch: "x64" },
     });
     expect(result.stdout).toContain(`downloading and extracting`);
     expect(result.exitCode).toBe(0);
 
-    switch (process.platform) {
-      case "linux": {
-        expect(await fs.exists("./binaries/linux/x64/shellcheck")).toBeTruthy();
-
-        break;
-      }
-
-      case "darwin": {
-        expect(
-          await fs.exists("./binaries/darwin/x64/shellcheck"),
-        ).toBeTruthy();
-
-        break;
-      }
-
-      case "win32": {
-        expect(
-          await fs.exists("./binaries/win32/x64/shellcheck.exe"),
-        ).toBeTruthy();
-
-        break;
-      }
-      // No default
-    }
-
+    expect(await fs.exists(`./binaries/linux/x64/shellcheck`)).toBeTruthy();
     expect(await fs.exists("./binaries/linux/arm/shellcheck")).toBeFalsy();
     expect(await fs.exists("./binaries/linux/arm64/shellcheck")).toBeFalsy();
     expect(await fs.exists("./binaries/win32/x64/shellcheck.exe")).toBeFalsy();
