@@ -57,29 +57,10 @@ export default {
         },
       },
     ],
-    "@semantic-release/changelog",
-    [
-      "@semantic-release/npm",
-      {
-        tarballDir: "dist",
-      },
-    ],
-    [
-      "@semantic-release/git",
-      {
-        assets: [
-          "README.md",
-          "CHANGELOG.md",
-          "package.json",
-          "package-lock.json",
-          "npm-shrinkwrap.json",
-        ],
-      },
-    ],
+    "@semantic-release/npm",
     [
       "@semantic-release/github",
       {
-        assets: "dist/*.tgz",
         addReleases: "bottom",
       },
     ],

@@ -2,9 +2,14 @@ name: ci
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
   pull_request:
-    branches: [master]
+    branches:
+      - master
+
+permissions:
+  contents: read
 
 jobs:
   test:
@@ -26,18 +31,20 @@ jobs:
   release:
     runs-on: ubuntu-latest
 
-    # Only run on push events or pull requests coming from the same repository, except from dependabot
-    if: github.event_name == 'push' || github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
-
     needs: test
+
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for npm provenance
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
       - uses: volta-cli/action@v4
       - run: npm ci
+      - run: npm audit signatures
       - run: npx semantic-release
         env:
-          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
