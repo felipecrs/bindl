@@ -54,7 +54,7 @@
     "posttest": "npm run lint"
   },
   "volta": {
-    "node": "22.14.0",
+    "node": "22.15.0",
     "npm": "11.2.0"
   }
 }
