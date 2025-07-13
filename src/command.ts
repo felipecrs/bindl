@@ -60,6 +60,7 @@ export class MainCommand extends Command {
       await importPlugin("@xhmikosr/decompress-tar"),
       await importPlugin("@xhmikosr/decompress-tarbz2"),
       await importPlugin("@xhmikosr/decompress-targz"),
+      await importPlugin("@felipecrs/decompress-tarxz"),
       await importPlugin("@xhmikosr/decompress-unzip"),
     ];
 
