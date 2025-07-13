@@ -6,6 +6,7 @@
   "bin": "lib/index.js",
   "bugs": "https://github.com/felipecrs/bindl/issues",
   "dependencies": {
+    "@xhmikosr/decompress": "^10.0.1",
     "@xhmikosr/decompress-tar": "^8.0.1",
     "@xhmikosr/decompress-tarbz2": "^8.0.2",
     "@xhmikosr/decompress-targz": "^8.0.1",

@@ -6,6 +6,8 @@ import { rimraf } from "rimraf";
 
 // @ts-expect-error
 import download from "@xhmikosr/downloader";
+// @ts-expect-error
+import decompress from "@xhmikosr/decompress";
 
 import { description } from "./package.js";
 
@@ -114,67 +116,67 @@ export class MainCommand extends Command {
 
           return false;
         },
-        task: async () =>
-          download(
-            binary.url,
-            `${downloadDirectory}/${binary.platform}/${binary.arch}`,
-            {
-              extract: true,
-              decompress: {
-                filter: (file: any) => {
-                  if (binary.files) {
-                    return Boolean(
-                      binary.files.some((f) => {
-                        if (f.source === file.path) {
-                          return true;
-                        }
-                        // Compare by path. For example, if source is shellcheck/ and
-                        // file is shellcheck/LICENSE.txt, we want to return true.
-                        if (
-                          f.source.endsWith("/") &&
-                          file.path.startsWith(f.source)
-                        ) {
-                          return true;
-                        }
-                        return false;
-                      }),
-                    );
-                  }
+        task: async () => {
+          const outputDirectory = `${downloadDirectory}/${binary.platform}/${binary.arch}`;
 
-                  return true;
-                },
-                map: (file: any) => {
-                  if (binary.files) {
-                    let remapDirectory = false;
-                    const f = binary.files.find((f) => {
-                      if (f.source === file.path) {
-                        return true;
-                      }
-                      // Compare by path. For example, if source is shellcheck/ and
-                      // target is directory/, and file is shellcheck/LICENSE.txt, we
-                      // want to map it to directory/LICENSE.txt.
-                      if (
-                        f.source.endsWith("/") &&
-                        file.path.startsWith(f.source)
-                      ) {
-                        remapDirectory = true;
-                        return true;
-                      }
-                      return false;
-                    });
-                    if (f) {
-                      file.path = remapDirectory
-                        ? file.path.replace(f.source, f.target)
-                        : f.target;
+          // Download the file as a buffer
+          const fileBuffer = await download(binary.url);
+
+          // Use decompress directly with filter and map functions
+          await decompress(fileBuffer, outputDirectory, {
+            filter: (file: any) => {
+              if (binary.files) {
+                return Boolean(
+                  binary.files.some((f) => {
+                    if (f.source === file.path) {
+                      return true;
                     }
-                  }
+                    // Compare by path. For example, if source is shellcheck/ and
+                    // file is shellcheck/LICENSE.txt, we want to return true.
+                    if (
+                      f.source.endsWith("/") &&
+                      file.path.startsWith(f.source)
+                    ) {
+                      return true;
+                    }
+                    return false;
+                  }),
+                );
+              }
 
-                  return file;
-                },
-                plugins,
-              },
+              return true;
             },
-          ),
+            map: (file: any) => {
+              if (binary.files) {
+                let remapDirectory = false;
+                const f = binary.files.find((f) => {
+                  if (f.source === file.path) {
+                    return true;
+                  }
+                  // Compare by path. For example, if source is shellcheck/ and
+                  // target is directory/, and file is shellcheck/LICENSE.txt, we
+                  // want to map it to directory/LICENSE.txt.
+                  if (
+                    f.source.endsWith("/") &&
+                    file.path.startsWith(f.source)
+                  ) {
+                    remapDirectory = true;
+                    return true;
+                  }
+                  return false;
+                });
+                if (f) {
+                  file.path = remapDirectory
+                    ? file.path.replace(f.source, f.target)
+                    : f.target;
+                }
+              }
+
+              return file;
+            },
+            plugins,
+          });
+        },
       });
     }
 
