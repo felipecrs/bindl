@@ -1,9 +1,12 @@
 import chalk from "chalk";
 import { Command, Option } from "clipanion";
 import { cosmiconfig } from "cosmiconfig";
-import download from "download";
 import { Listr } from "listr2";
 import { rimraf } from "rimraf";
+
+// @ts-expect-error
+import download from "@xhmikosr/downloader";
+
 import { description } from "./package.js";
 
 export class MainCommand extends Command {
@@ -52,10 +55,10 @@ export class MainCommand extends Command {
     const tasks = new Listr([], { concurrent: true });
 
     const plugins = [
-      await importPlugin("decompress-tar"),
-      await importPlugin("decompress-tarbz2"),
-      await importPlugin("decompress-targz"),
-      await importPlugin("decompress-unzip"),
+      await importPlugin("@xhmikosr/decompress-tar"),
+      await importPlugin("@xhmikosr/decompress-tarbz2"),
+      await importPlugin("@xhmikosr/decompress-targz"),
+      await importPlugin("@xhmikosr/decompress-unzip"),
     ];
 
     // Load the custom decompressPlugins
@@ -117,57 +120,59 @@ export class MainCommand extends Command {
             `${downloadDirectory}/${binary.platform}/${binary.arch}`,
             {
               extract: true,
-              filter: (file) => {
-                if (binary.files) {
-                  return Boolean(
-                    binary.files.some((f) => {
+              decompress: {
+                filter: (file: any) => {
+                  if (binary.files) {
+                    return Boolean(
+                      binary.files.some((f) => {
+                        if (f.source === file.path) {
+                          return true;
+                        }
+                        // Compare by path. For example, if source is shellcheck/ and
+                        // file is shellcheck/LICENSE.txt, we want to return true.
+                        if (
+                          f.source.endsWith("/") &&
+                          file.path.startsWith(f.source)
+                        ) {
+                          return true;
+                        }
+                        return false;
+                      }),
+                    );
+                  }
+
+                  return true;
+                },
+                map: (file: any) => {
+                  if (binary.files) {
+                    let remapDirectory = false;
+                    const f = binary.files.find((f) => {
                       if (f.source === file.path) {
                         return true;
                       }
                       // Compare by path. For example, if source is shellcheck/ and
-                      // file is shellcheck/LICENSE.txt, we want to return true.
+                      // target is directory/, and file is shellcheck/LICENSE.txt, we
+                      // want to map it to directory/LICENSE.txt.
                       if (
                         f.source.endsWith("/") &&
                         file.path.startsWith(f.source)
                       ) {
+                        remapDirectory = true;
                         return true;
                       }
                       return false;
-                    }),
-                  );
-                }
-
-                return true;
-              },
-              map: (file) => {
-                if (binary.files) {
-                  let remapDirectory = false;
-                  const f = binary.files.find((f) => {
-                    if (f.source === file.path) {
-                      return true;
+                    });
+                    if (f) {
+                      file.path = remapDirectory
+                        ? file.path.replace(f.source, f.target)
+                        : f.target;
                     }
-                    // Compare by path. For example, if source is shellcheck/ and
-                    // target is directory/, and file is shellcheck/LICENSE.txt, we
-                    // want to map it to directory/LICENSE.txt.
-                    if (
-                      f.source.endsWith("/") &&
-                      file.path.startsWith(f.source)
-                    ) {
-                      remapDirectory = true;
-                      return true;
-                    }
-                    return false;
-                  });
-                  if (f) {
-                    file.path = remapDirectory
-                      ? file.path.replace(f.source, f.target)
-                      : f.target;
                   }
-                }
 
-                return file;
+                  return file;
+                },
+                plugins,
               },
-              plugins,
             },
           ),
       });
