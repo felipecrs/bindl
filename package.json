@@ -18,7 +18,7 @@
     "rimraf": "^6.0.1"
   },
   "devDependencies": {
-    "@felipecrs/decompress-tarxz": "^4.0.0",
+    "@felipecrs/decompress-tarxz": "^5.0.0",
     "@types/download": "^8.0.2",
     "@types/node": "^20.17.10",
     "c8": "^10.1.3",
