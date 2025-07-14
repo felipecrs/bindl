@@ -45,6 +45,8 @@ describe("bindl", () => {
     expect(await fs.exists(`./binaries/linux/arm64/shellcheck`)).toBeTruthy();
     expect(await fs.exists(`./binaries/darwin/x64/shellcheck`)).toBeTruthy();
     expect(await fs.exists(`./binaries/darwin/arm64/shellcheck`)).toBeTruthy();
+    expect(await fs.exists(`./binaries/darwin/arm64/LICENSE.txt`)).toBeTruthy();
+    expect(await fs.exists(`./binaries/darwin/arm64/README.txt`)).toBeTruthy();
     expect(await fs.exists(`./binaries/win32/x64/shellcheck.exe`)).toBeTruthy();
     expect(
       await fs.exists(`./binaries/win32/arm64/shellcheck.exe`),
@@ -88,6 +90,10 @@ describe("bindl", () => {
     expect(await fs.exists(`./binaries/linux/x64/shellcheck`)).toBeTruthy();
     expect(await fs.exists("./binaries/linux/arm/shellcheck")).toBeFalsy();
     expect(await fs.exists("./binaries/linux/arm64/shellcheck")).toBeFalsy();
+    expect(await fs.exists("./binaries/darwin/x64/shellcheck")).toBeFalsy();
+    expect(await fs.exists("./binaries/darwin/arm64/shellcheck")).toBeFalsy();
+    expect(await fs.exists("./binaries/darwin/arm64/LICENSE.txt")).toBeFalsy();
+    expect(await fs.exists("./binaries/darwin/arm64/README.txt")).toBeFalsy();
     expect(await fs.exists("./binaries/win32/x64/shellcheck.exe")).toBeFalsy();
     expect(await fs.exists("./binaries/win32/ia32/shellcheck.exe")).toBeFalsy();
     expect(await fs.exists("./binaries/win32/ia32/LICENSE.txt")).toBeFalsy();
@@ -96,14 +102,18 @@ describe("bindl", () => {
 
   it("downloads only linux-arm64 binary when npm_config_arch is set", async () => {
     const result = await execaCommand(`${bin} --config ${configPath}`, {
-      env: { npm_config_arch: "x64" },
+      env: { npm_config_arch: "arm64" },
     });
     expect(result.stdout).toContain(`downloading and extracting`);
     expect(result.exitCode).toBe(0);
 
-    expect(await fs.exists(`./binaries/linux/x64/shellcheck`)).toBeTruthy();
+    expect(await fs.exists(`./binaries/linux/x64/shellcheck`)).toBeFalsy();
     expect(await fs.exists("./binaries/linux/arm/shellcheck")).toBeFalsy();
-    expect(await fs.exists("./binaries/linux/arm64/shellcheck")).toBeFalsy();
+    expect(await fs.exists("./binaries/linux/arm64/shellcheck")).toBeTruthy();
+    expect(await fs.exists("./binaries/darwin/x64/shellcheck")).toBeFalsy();
+    expect(await fs.exists("./binaries/darwin/arm64/shellcheck")).toBeFalsy();
+    expect(await fs.exists("./binaries/darwin/arm64/LICENSE.txt")).toBeFalsy();
+    expect(await fs.exists("./binaries/darwin/arm64/README.txt")).toBeFalsy();
     expect(await fs.exists("./binaries/win32/x64/shellcheck.exe")).toBeFalsy();
     expect(await fs.exists("./binaries/win32/ia32/shellcheck.exe")).toBeFalsy();
     expect(await fs.exists("./binaries/win32/ia32/LICENSE.txt")).toBeFalsy();
@@ -116,5 +126,17 @@ describe("bindl", () => {
     });
     expect(result.stdout).toContain(`Skipping`);
     expect(result.exitCode).toBe(0);
+
+    expect(await fs.exists(`./binaries/linux/x64/shellcheck`)).toBeFalsy();
+    expect(await fs.exists("./binaries/linux/arm/shellcheck")).toBeFalsy();
+    expect(await fs.exists("./binaries/linux/arm64/shellcheck")).toBeFalsy();
+    expect(await fs.exists("./binaries/darwin/x64/shellcheck")).toBeFalsy();
+    expect(await fs.exists("./binaries/darwin/arm64/shellcheck")).toBeFalsy();
+    expect(await fs.exists("./binaries/darwin/arm64/LICENSE.txt")).toBeFalsy();
+    expect(await fs.exists("./binaries/darwin/arm64/README.txt")).toBeFalsy();
+    expect(await fs.exists("./binaries/win32/x64/shellcheck.exe")).toBeFalsy();
+    expect(await fs.exists("./binaries/win32/ia32/shellcheck.exe")).toBeFalsy();
+    expect(await fs.exists("./binaries/win32/ia32/LICENSE.txt")).toBeFalsy();
+    expect(await fs.exists("./binaries/win32/ia32/README.txt")).toBeFalsy();
   });
 });

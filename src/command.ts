@@ -80,7 +80,8 @@ export class MainCommand extends Command {
       platform: "linux" | "darwin" | "win32";
       arch: "x64" | "x86";
       url: string;
-      files: { source: string; target: string }[];
+      files?: { source: string; target: string }[];
+      stripComponents?: number;
     }[]) {
       tasks.add({
         title: `downloading and extracting ${chalk.blue.underline(binary.url)}`,
@@ -125,6 +126,7 @@ export class MainCommand extends Command {
 
           // Use decompress directly with filter and map functions
           await decompress(fileBuffer, outputDirectory, {
+            strip: binary.stripComponents,
             filter: (file: any) => {
               if (binary.files) {
                 return Boolean(

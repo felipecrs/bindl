@@ -51,12 +51,7 @@ export default {
       platform: "darwin",
       arch: "arm64",
       url: `${shellcheckReleaseUrl}.darwin.aarch64.tar.xz`,
-      files: [
-        {
-          source: `shellcheck-${version}/shellcheck`,
-          target: "shellcheck",
-        },
-      ],
+      stripComponents: 1,
     },
     {
       platform: "win32",
