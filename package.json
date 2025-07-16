@@ -7,12 +7,11 @@
   "bugs": "https://github.com/felipecrs/bindl/issues",
   "dependencies": {
     "@felipecrs/decompress-tarxz": "^5.0.2",
-    "@xhmikosr/decompress": "^10.0.1",
     "@xhmikosr/decompress-tar": "^8.0.1",
     "@xhmikosr/decompress-tarbz2": "^8.0.2",
     "@xhmikosr/decompress-targz": "^8.0.1",
     "@xhmikosr/decompress-unzip": "^7.0.0",
-    "@xhmikosr/downloader": "^15.0.1",
+    "@xhmikosr/downloader": "^15.0.2",
     "chalk": "^5.4.1",
     "clipanion": "^4.0.0-rc.4",
     "cosmiconfig": "^9.0.0",
