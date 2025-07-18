@@ -1,7 +1,9 @@
+import { defineConfig } from "../../src/index.js";
+
 const version = "v0.10.0";
 const shellcheckReleaseUrl = `https://github.com/koalaman/shellcheck/releases/download/${version}/shellcheck-${version}`;
 
-export default {
+export default defineConfig({
   binaries: [
     {
       platform: "linux",
@@ -66,4 +68,4 @@ export default {
       // not using "files" to exercise a test
     },
   ],
-};
+});

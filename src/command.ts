@@ -8,6 +8,7 @@ import { rimraf } from "rimraf";
 import download from "@xhmikosr/downloader";
 
 import { description } from "./package.js";
+import type { BindlConfig } from "./index.js";
 
 export class MainCommand extends Command {
   config = Option.String("-c,--config", {
@@ -52,6 +53,8 @@ export class MainCommand extends Command {
       throw new Error("Not able to load the configuration file.");
     }
 
+    const config: BindlConfig = result.config;
+
     const tasks = new Listr([], { concurrent: true });
 
     const plugins = [
@@ -63,24 +66,15 @@ export class MainCommand extends Command {
     ];
 
     // Load the custom decompressPlugins
-    if (
-      result.config.decompressPlugins &&
-      result.config.decompressPlugins.length > 0
-    ) {
-      for (const plugin of result.config.decompressPlugins) {
+    if (config.decompressPlugins && config.decompressPlugins.length > 0) {
+      for (const plugin of config.decompressPlugins) {
         plugins.push(await importPlugin(plugin));
       }
     }
 
-    const downloadDirectory = result.config.downloadDirectory ?? "./binaries";
+    const downloadDirectory = config.downloadDirectory ?? "./binaries";
 
-    for (const binary of result.config.binaries as {
-      platform: "linux" | "darwin" | "win32";
-      arch: "x64" | "x86";
-      url: string;
-      files?: { source: string; target: string }[];
-      stripComponents?: number;
-    }[]) {
+    for (const binary of config.binaries) {
       tasks.add({
         title: `downloading and extracting ${chalk.blue.underline(binary.url)}`,
         skip: () => {

@@ -44,9 +44,10 @@
   "license": "MIT",
   "type": "module",
   "exports": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "repository": "felipecrs/bindl",
   "scripts": {
-    "build": "rimraf lib && tsc",
+    "build": "rimraf lib && tsc && rimraf --glob 'lib/!(*index).d.ts'",
     "lint": "tsc --noEmit && eslint . && prettier --check . && installed-check --ignore-dev",
     "prepack": "npm run build",
     "test": "c8 vitest --no-watch",

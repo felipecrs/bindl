@@ -40,7 +40,7 @@ Download binaries looking for the config file at `./dir/bindl.config.js`
   $ bindl --config ./dir/bindl.config.js
 ```
 
-You can find an example of a config file [here](./test/res/bindl.config.js).
+You can find an example configuration file in the [bindl.config.js test fixture](./test/res/bindl.config.js).
 
 ## Environment variables
 
