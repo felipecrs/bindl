@@ -1,15 +1,16 @@
-const version = "v0.10.0";
-const shellcheckReleaseUrl = `https://github.com/koalaman/shellcheck/releases/download/${version}/shellcheck-${version}`;
+// @ts-check
 
-export default {
+import { defineConfig } from "../../src/index.js";
+
+export default defineConfig({
   binaries: [
     {
       platform: "linux",
       arch: "x64",
-      url: `${shellcheckReleaseUrl}.linux.x86_64.tar.xz`,
+      url: "https://github.com/koalaman/shellcheck/releases/download/v0.10.0/shellcheck-v0.10.0.linux.x86_64.tar.xz",
       files: [
         {
-          source: `shellcheck-${version}/`,
+          source: "shellcheck-v0.10.0/",
           target: "directory/",
         },
       ],
@@ -17,13 +18,13 @@ export default {
     {
       platform: "linux",
       arch: "x64",
-      url: `${shellcheckReleaseUrl}.linux.x86_64.tar.xz`,
+      url: "https://github.com/koalaman/shellcheck/releases/download/v0.10.0/shellcheck-v0.10.0.linux.x86_64.tar.xz",
       files: [
         {
-          source: `shellcheck-${version}/`,
+          source: "shellcheck-v0.10.0/",
           target: "",
         },
       ],
     },
   ],
-};
+});
