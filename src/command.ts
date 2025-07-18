@@ -1,8 +1,10 @@
 import chalk from "chalk";
 import { Command, Option } from "clipanion";
 import { cosmiconfig } from "cosmiconfig";
+import { execaCommand } from "execa";
 import { Listr } from "listr2";
 import { rimraf } from "rimraf";
+import path from "node:path";
 
 // @ts-expect-error
 import download from "@xhmikosr/downloader";
@@ -111,67 +113,100 @@ export class MainCommand extends Command {
           return false;
         },
         task: async () => {
-          await download(
-            binary.url,
-            `${downloadDirectory}/${binary.platform}/${binary.arch}`,
-            {
-              extract: true,
-              decompress: {
-                strip: binary.stripComponents,
-                filter: (file: any) => {
-                  if (binary.files) {
-                    return Boolean(
-                      binary.files.some((f) => {
-                        if (f.source === file.path) {
-                          return true;
-                        }
-                        // Compare by path. For example, if source is shellcheck/ and
-                        // file is shellcheck/LICENSE.txt, we want to return true.
-                        if (
-                          f.source.endsWith("/") &&
-                          file.path.startsWith(f.source)
-                        ) {
-                          return true;
-                        }
-                        return false;
-                      }),
-                    );
-                  }
+          const outputDirectory = path.join(
+            downloadDirectory,
+            binary.platform,
+            binary.arch,
+          );
 
-                  return true;
-                },
-                map: (file: any) => {
-                  if (binary.files) {
-                    let remapDirectory = false;
-                    const f = binary.files.find((f) => {
+          await download(binary.url, outputDirectory, {
+            extract: true,
+            decompress: {
+              strip: binary.stripComponents,
+              filter: (file: any) => {
+                if (binary.files) {
+                  return Boolean(
+                    binary.files.some((f) => {
                       if (f.source === file.path) {
                         return true;
                       }
                       // Compare by path. For example, if source is shellcheck/ and
-                      // target is directory/, and file is shellcheck/LICENSE.txt, we
-                      // want to map it to directory/LICENSE.txt.
+                      // file is shellcheck/LICENSE.txt, we want to return true.
                       if (
                         f.source.endsWith("/") &&
                         file.path.startsWith(f.source)
                       ) {
-                        remapDirectory = true;
                         return true;
                       }
                       return false;
-                    });
-                    if (f) {
-                      file.path = remapDirectory
-                        ? file.path.replace(f.source, f.target)
-                        : f.target;
-                    }
-                  }
+                    }),
+                  );
+                }
 
-                  return file;
-                },
-                plugins,
+                return true;
               },
+              map: (file: any) => {
+                if (binary.files) {
+                  let remapDirectory = false;
+                  const f = binary.files.find((f) => {
+                    if (f.source === file.path) {
+                      return true;
+                    }
+                    // Compare by path. For example, if source is shellcheck/ and
+                    // target is directory/, and file is shellcheck/LICENSE.txt, we
+                    // want to map it to directory/LICENSE.txt.
+                    if (
+                      f.source.endsWith("/") &&
+                      file.path.startsWith(f.source)
+                    ) {
+                      remapDirectory = true;
+                      return true;
+                    }
+                    return false;
+                  });
+                  if (f) {
+                    file.path = remapDirectory
+                      ? file.path.replace(f.source, f.target)
+                      : f.target;
+                  }
+                }
+
+                return file;
+              },
+              plugins,
             },
-          );
+          });
+
+          // Run tests for this binary if they exist
+          if (!binary.tests || binary.tests.length === 0) {
+            return;
+          }
+
+          // Skip tests if the current platform doesn't match the binary's platform
+          if (
+            process.platform !== binary.platform ||
+            process.arch !== binary.arch
+          ) {
+            return;
+          }
+
+          for (const test of binary.tests) {
+            try {
+              const { stdout } = await execaCommand(test.command, {
+                cwd: outputDirectory,
+              });
+
+              if (!stdout.includes(test.expectedOutputContains)) {
+                throw new Error(
+                  `Expected output to contain "${test.expectedOutputContains}", but got: ${stdout}`,
+                );
+              }
+            } catch (error) {
+              throw new Error(
+                `Test failed for command "${test.command}": ${error instanceof Error ? error.message : String(error)}`,
+              );
+            }
+          }
         },
       });
     }
