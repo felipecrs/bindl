@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { realpath } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 import { Builtins, Cli } from "clipanion";
 import { MainCommand } from "./command.js";
 import { name, version } from "./package.js";
@@ -104,8 +105,9 @@ export function defineConfig(config: BindlConfig): BindlConfig {
 // Only run the CLI if this file is being executed directly
 // TODO: use import.meta.main when available
 // https://nodejs.org/docs/latest-v24.x/api/esm.html#importmetamain
-const thisModule = await realpath(process.argv[1]);
-if (import.meta.url === `file://${thisModule}`) {
+const importFilePath = fileURLToPath(import.meta.url);
+const thisFilePath = await realpath(process.argv[1]);
+if (importFilePath === thisFilePath) {
   const cli = new Cli({
     binaryLabel: name,
     binaryName: name,
