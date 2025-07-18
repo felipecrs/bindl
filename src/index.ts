@@ -16,6 +16,18 @@ export interface BindlArchiveFile {
   target: string;
 }
 
+export interface BindlBinaryTest {
+  /**
+   * The command to run for testing the binary.
+   * This command will be executed within the binary's output directory.
+   */
+  command: string;
+  /**
+   * Expected text that should be contained in the command output
+   */
+  expectedOutputContains: string;
+}
+
 export interface BindlBinary {
   /**
    * The target platform for this binary
@@ -39,6 +51,11 @@ export interface BindlBinary {
    * Useful when the archive contains a top-level directory that you want to remove.
    */
   stripComponents?: number;
+  /**
+   * Optional array of tests to run after extracting the binary.
+   * Tests will only be executed if the current platform and architecture matches the binary's platform and architecture.
+   */
+  tests?: BindlBinaryTest[];
 }
 
 export interface BindlConfig {
