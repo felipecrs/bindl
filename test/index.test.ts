@@ -40,7 +40,7 @@ describe("bindl", () => {
     const result = await execaCommand(
       `${binCommand} --config ${path.normalize(`${configDirectory}/bindl.config.js`)}`,
     );
-    expect(result.stdout).toContain(`downloading and extracting`);
+    expect(result.stdout).toContain(`downloading`);
     expect(result.exitCode).toBe(0);
 
     expect(await fs.exists(`./binaries/linux/x64/shellcheck`)).toBeTruthy();
@@ -62,7 +62,7 @@ describe("bindl", () => {
     const result = await execaCommand(
       `${binCommand} --config ${path.normalize(`${configDirectory}/alternative-directory.bindl.config.js`)}`,
     );
-    expect(result.stdout).toContain(`downloading and extracting`);
+    expect(result.stdout).toContain(`downloading`);
     expect(result.exitCode).toBe(0);
 
     expect(
@@ -74,7 +74,7 @@ describe("bindl", () => {
     const result = await execaCommand(
       `${binCommand} --config ${path.normalize(`${configDirectory}/remap-directory.bindl.config.js`)}`,
     );
-    expect(result.stdout).toContain(`downloading and extracting`);
+    expect(result.stdout).toContain(`downloading`);
     expect(result.exitCode).toBe(0);
 
     expect(
@@ -83,11 +83,31 @@ describe("bindl", () => {
     expect(await fs.exists("./binaries/linux/x64/shellcheck")).toBeTruthy();
   });
 
+  it("downloads shfmt as a single file", async () => {
+    const result = await execaCommand(
+      `${binCommand} --config ${path.normalize(`${configDirectory}/individual-files.bindl.config.js`)}`,
+    );
+    expect(result.stdout).toContain(`downloading`);
+    expect(result.exitCode).toBe(0);
+
+    expect(await fs.exists("./binaries/linux/x64/shfmt")).toBeTruthy();
+    expect(await fs.exists("./binaries/linux/x64/sha256sums.txt")).toBeTruthy();
+    if (process.platform !== "win32") {
+      // expect to have executable permissions
+      const stats = await fs.stat("./binaries/linux/x64/shfmt");
+      expect(stats.mode & 0o777).toBe(0o755);
+
+      // expect that sha256sums.txt has no executable permissions
+      const shaStats = await fs.stat("./binaries/linux/x64/sha256sums.txt");
+      expect(shaStats.mode & 0o777).toBe(0o644);
+    }
+  });
+
   it("downloads only current binary when BINDL_CURRENT_ONLY is set", async () => {
     const result = await execaCommand(`${binCommand} --config ${configPath}`, {
       env: { BINDL_CURRENT_ONLY: "true" },
     });
-    expect(result.stdout).toContain(`downloading and extracting`);
+    expect(result.stdout).toContain(`downloading`);
     expect(result.exitCode).toBe(0);
 
     const currentPlatform = process.platform;
@@ -140,7 +160,7 @@ describe("bindl", () => {
     const result = await execaCommand(`${binCommand} --config ${configPath}`, {
       env: { npm_config_arch: "arm64" },
     });
-    expect(result.stdout).toContain(`downloading and extracting`);
+    expect(result.stdout).toContain(`downloading`);
     expect(result.exitCode).toBe(0);
 
     const currentPlatform = process.platform;

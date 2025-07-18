@@ -5,6 +5,7 @@ import { execaCommand } from "execa";
 import { Listr } from "listr2";
 import { rimraf } from "rimraf";
 import path from "node:path";
+import { chmod } from "node:fs/promises";
 
 // @ts-expect-error
 import download from "@xhmikosr/downloader";
@@ -74,11 +75,13 @@ export class MainCommand extends Command {
       }
     }
 
-    const downloadDirectory = config.downloadDirectory ?? "./binaries";
+    const downloadDirectory = path.normalize(
+      config.downloadDirectory ?? "./binaries",
+    );
 
     for (const binary of config.binaries) {
       tasks.add({
-        title: `downloading and extracting ${chalk.blue.underline(binary.url)}`,
+        title: `downloading ${chalk.blue.underline(binary.url)}`,
         skip: () => {
           // If BINDL_CURRENT_ONLY is set, we only download the binary for the
           // current platform and arch.
@@ -119,71 +122,90 @@ export class MainCommand extends Command {
             binary.arch,
           );
 
-          await download(binary.url, outputDirectory, {
-            extract: true,
-            decompress: {
-              strip: binary.stripComponents,
-              filter: (file: any) => {
-                if (binary.files) {
-                  return Boolean(
-                    binary.files.some((f) => {
-                      if (f.source === file.path) {
-                        return true;
-                      }
-                      // Compare by path. For example, if source is shellcheck/ and
-                      // file is shellcheck/LICENSE.txt, we want to return true.
-                      if (
-                        f.source.endsWith("/") &&
-                        file.path.startsWith(f.source)
-                      ) {
-                        return true;
-                      }
-                      return false;
-                    }),
-                  );
-                }
-
-                return true;
-              },
-              map: (file: any) => {
-                if (binary.files) {
-                  let remapDirectory = false;
-                  const f = binary.files.find((f) => {
-                    if (f.source === file.path) {
-                      return true;
-                    }
-                    // Compare by path. For example, if source is shellcheck/ and
-                    // target is directory/, and file is shellcheck/LICENSE.txt, we
-                    // want to map it to directory/LICENSE.txt.
-                    if (
-                      f.source.endsWith("/") &&
-                      file.path.startsWith(f.source)
-                    ) {
-                      remapDirectory = true;
-                      return true;
-                    }
-                    return false;
-                  });
-                  if (f) {
-                    file.path = remapDirectory
-                      ? file.path.replace(f.source, f.target)
-                      : f.target;
-                  }
-                }
-
-                return file;
-              },
-              plugins,
-            },
-          });
-
-          // Run tests for this binary if they exist
-          if (!binary.tests || binary.tests.length === 0) {
-            return;
+          if (binary.type === "file" && binary.filename === undefined) {
+            throw new Error(
+              `Configuration error: 'filename' is required when type is 'file'.`,
+            );
           }
 
-          // Skip tests if the current platform doesn't match the binary's platform
+          const downloadOptions =
+            binary.type === "file"
+              ? {
+                  filename: binary.filename,
+                }
+              : {
+                  extract: true,
+                  decompress: {
+                    strip: binary.stripComponents,
+                    filter: (file: any) => {
+                      if (binary.files) {
+                        return Boolean(
+                          binary.files.some((f) => {
+                            if (f.source === file.path) {
+                              return true;
+                            }
+                            // Compare by path. For example, if source is shellcheck/ and
+                            // file is shellcheck/LICENSE.txt, we want to return true.
+                            if (
+                              f.source.endsWith("/") &&
+                              file.path.startsWith(f.source)
+                            ) {
+                              return true;
+                            }
+                            return false;
+                          }),
+                        );
+                      }
+
+                      return true;
+                    },
+                    map: (file: any) => {
+                      if (binary.files) {
+                        let remapDirectory = false;
+                        const f = binary.files.find((f) => {
+                          if (f.source === file.path) {
+                            return true;
+                          }
+                          // Compare by path. For example, if source is shellcheck/ and
+                          // target is directory/, and file is shellcheck/LICENSE.txt, we
+                          // want to map it to directory/LICENSE.txt.
+                          if (
+                            f.source.endsWith("/") &&
+                            file.path.startsWith(f.source)
+                          ) {
+                            remapDirectory = true;
+                            return true;
+                          }
+                          return false;
+                        });
+                        if (f) {
+                          file.path = remapDirectory
+                            ? file.path.replace(f.source, f.target)
+                            : f.target;
+                        }
+                      }
+
+                      return file;
+                    },
+                    plugins,
+                  },
+                };
+
+          await download(binary.url, outputDirectory, downloadOptions);
+
+          if (binary.type === "file") {
+            const filePath = path.join(outputDirectory, binary.filename);
+
+            // Set executable permissions on non-Windows platforms
+            if ((binary.executable ?? true) && process.platform !== "win32") {
+              await chmod(filePath, 0o755);
+            }
+          }
+
+          // Only run tests for the current platform and arch
           if (
+            !binary.tests ||
+            binary.tests.length === 0 ||
             process.platform !== binary.platform ||
             process.arch !== binary.arch
           ) {

@@ -1,6 +1,6 @@
 {
   "name": "bindl",
-  "description": "Downloads and extracts binaries from compressed packages using a config file",
+  "description": "Downloads binaries directly or from archives as defined in a config file",
   "version": "0.0.0-development",
   "author": "Felipe Santos @felipecrs",
   "bin": "lib/index.js",

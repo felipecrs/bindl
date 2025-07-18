@@ -29,7 +29,7 @@ export interface BindlBinaryTest {
   expectedOutputContains: string;
 }
 
-export interface BindlBinary {
+interface BindlBinaryBase {
   /**
    * The target platform for this binary
    */
@@ -43,6 +43,40 @@ export interface BindlBinary {
    */
   url: string;
   /**
+   * Optional array of tests to run after extracting the binary.
+   * Tests will only be executed if the current platform and architecture matches the binary's platform and architecture.
+   */
+  tests?: BindlBinaryTest[];
+}
+
+interface BindlBinaryFile extends BindlBinaryBase {
+  /**
+   * The type of download: "file" - Download a single file directly
+   */
+  type: "file";
+  /**
+   * The output filename for the downloaded file
+   * Path is relative to the binary's platform/arch directory
+   */
+  filename: string;
+  /**
+   * Whether to make the downloaded file executable (only applicable on non-Windows platforms)
+   * @default true
+   */
+  executable?: boolean;
+}
+
+interface BindlBinaryArchive extends BindlBinaryBase {
+  /**
+   * The type of download: "archive" - Download and extract an archive (tar.gz, zip, etc.)
+   */
+  type?: "archive";
+  /**
+   * The output directory for the extracted archive
+   * Path is relative to the binary's platform/arch directory
+   */
+  filename?: string;
+  /**
    * Optional array of files to extract from the archive.
    * If not specified, all files will be extracted.
    */
@@ -52,12 +86,9 @@ export interface BindlBinary {
    * Useful when the archive contains a top-level directory that you want to remove.
    */
   stripComponents?: number;
-  /**
-   * Optional array of tests to run after extracting the binary.
-   * Tests will only be executed if the current platform and architecture matches the binary's platform and architecture.
-   */
-  tests?: BindlBinaryTest[];
 }
+
+export type BindlBinary = BindlBinaryFile | BindlBinaryArchive;
 
 export interface BindlConfig {
   /**
