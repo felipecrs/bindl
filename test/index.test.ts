@@ -1,4 +1,4 @@
-import spawn from "nano-spawn";
+import { execaCommand } from "execa";
 import {
   afterEach,
   beforeAll,
@@ -34,8 +34,11 @@ describe("bindl", () => {
   });
 
   it("downloads shellcheck", async () => {
-    const result = await spawn(bin, ["--config", configPath]);
+    const result = await execaCommand(
+      `${bin} --config ${configDirectory}/bindl.config.js`,
+    );
     expect(result.stdout).toContain(`downloading and extracting`);
+    expect(result.exitCode).toBe(0);
 
     expect(await fs.exists(`./binaries/linux/x64/shellcheck`)).toBeTruthy();
     expect(await fs.exists(`./binaries/linux/arm/shellcheck`)).toBeTruthy();
@@ -53,11 +56,11 @@ describe("bindl", () => {
   });
 
   it("downloads shellcheck to alternative directory", async () => {
-    const result = await spawn(bin, [
-      "--config",
-      `${configDirectory}/alternative-directory.bindl.config.js`,
-    ]);
+    const result = await execaCommand(
+      `${bin} --config ${configDirectory}/alternative-directory.bindl.config.js`,
+    );
     expect(result.stdout).toContain(`downloading and extracting`);
+    expect(result.exitCode).toBe(0);
 
     expect(
       await fs.exists("./binaries-test/linux/x64/shellcheck"),
@@ -65,11 +68,11 @@ describe("bindl", () => {
   });
 
   it("downloads shellcheck remapping directory", async () => {
-    const result = await spawn(bin, [
-      "--config",
-      `${configDirectory}/remap-directory.bindl.config.js`,
-    ]);
+    const result = await execaCommand(
+      `${bin} --config ${configDirectory}/remap-directory.bindl.config.js`,
+    );
     expect(result.stdout).toContain(`downloading and extracting`);
+    expect(result.exitCode).toBe(0);
 
     expect(
       await fs.exists("./binaries/linux/x64/directory/shellcheck"),
@@ -78,10 +81,11 @@ describe("bindl", () => {
   });
 
   it("downloads only current binary when BINDL_CURRENT_ONLY is set", async () => {
-    const result = await spawn(bin, ["--config", configPath], {
+    const result = await execaCommand(`${bin} --config ${configPath}`, {
       env: { BINDL_CURRENT_ONLY: "true" },
     });
     expect(result.stdout).toContain(`downloading and extracting`);
+    expect(result.exitCode).toBe(0);
 
     expect(await fs.exists(`./binaries/linux/x64/shellcheck`)).toBeTruthy();
     expect(await fs.exists("./binaries/linux/arm/shellcheck")).toBeFalsy();
@@ -97,10 +101,11 @@ describe("bindl", () => {
   });
 
   it("downloads only linux-arm64 binary when npm_config_arch is set", async () => {
-    const result = await spawn(bin, ["--config", configPath], {
+    const result = await execaCommand(`${bin} --config ${configPath}`, {
       env: { npm_config_arch: "arm64" },
     });
     expect(result.stdout).toContain(`downloading and extracting`);
+    expect(result.exitCode).toBe(0);
 
     expect(await fs.exists(`./binaries/linux/x64/shellcheck`)).toBeFalsy();
     expect(await fs.exists("./binaries/linux/arm/shellcheck")).toBeFalsy();
@@ -116,10 +121,11 @@ describe("bindl", () => {
   });
 
   it("downloads nothing when BINDL_SKIP is set", async () => {
-    const result = await spawn(bin, ["--config", configPath], {
+    const result = await execaCommand(`${bin} --config ${configPath}`, {
       env: { BINDL_SKIP: "true" },
     });
     expect(result.stdout).toContain(`Skipping`);
+    expect(result.exitCode).toBe(0);
 
     expect(await fs.exists(`./binaries/linux/x64/shellcheck`)).toBeFalsy();
     expect(await fs.exists("./binaries/linux/arm/shellcheck")).toBeFalsy();
