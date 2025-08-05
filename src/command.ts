@@ -1,10 +1,11 @@
 import { chmod, rm } from "node:fs/promises";
 import path from "node:path";
 
+import { tokenizeArgs } from "args-tokenizer";
 import { Command, Option } from "clipanion";
 import { cosmiconfig } from "cosmiconfig";
-import { execaCommand } from "execa";
 import { Listr } from "listr2";
+import spawn from "nano-spawn";
 import pc from "picocolors";
 
 // @ts-expect-error
@@ -214,7 +215,8 @@ export class MainCommand extends Command {
 
           for (const test of binary.tests) {
             try {
-              const { stdout } = await execaCommand(test.command, {
+              const [command, ...commandArguments] = tokenizeArgs(test.command);
+              const { stdout } = await spawn(command, commandArguments, {
                 cwd: outputDirectory,
               });
 
