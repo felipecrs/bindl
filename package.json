@@ -20,10 +20,11 @@
     "@xhmikosr/decompress-targz": "^8.1.0",
     "@xhmikosr/decompress-unzip": "^7.1.0",
     "@xhmikosr/downloader": "^15.2.0",
+    "args-tokenizer": "^0.3.0",
     "clipanion": "^4.0.0-rc.4",
     "cosmiconfig": "^9.0.0",
-    "execa": "^9.6.0",
     "listr2": "^9.0.0",
+    "nano-spawn": "^1.0.2",
     "picocolors": "^1.1.1"
   },
   "devDependencies": {
@@ -33,6 +34,7 @@
     "conventional-changelog-conventionalcommits": "^9.1.0",
     "eslint": "^9.32.0",
     "eslint-plugin-unicorn": "^60.0.0",
+    "execa": "^9.6.0",
     "installed-check": "^9.3.0",
     "neostandard": "^0.12.2",
     "prettier": "^3.6.2",
@@ -44,7 +46,7 @@
     "zx": "^8.8.0"
   },
   "engines": {
-    "node": "^20.5.0 || >=22.0.0"
+    "node": "^20.17.0 || >=22.0.0"
   },
   "files": [
     "/lib"
