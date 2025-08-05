@@ -1,16 +1,17 @@
-import chalk from "chalk";
+import { chmod, rm } from "node:fs/promises";
+import path from "node:path";
+
 import { Command, Option } from "clipanion";
 import { cosmiconfig } from "cosmiconfig";
 import { execaCommand } from "execa";
 import { Listr } from "listr2";
-import path from "node:path";
-import { chmod, rm } from "node:fs/promises";
+import pc from "picocolors";
 
 // @ts-expect-error
 import download from "@xhmikosr/downloader";
 
-import { description } from "./package.js";
 import type { BindlConfig } from "./index.js";
+import { description } from "./package.js";
 
 export class MainCommand extends Command {
   config = Option.String("-c,--config", {
@@ -80,7 +81,7 @@ export class MainCommand extends Command {
 
     for (const binary of config.binaries) {
       tasks.add({
-        title: `downloading ${chalk.blue.underline(binary.url)}`,
+        title: pc.blue(pc.underline(binary.url)),
         skip: () => {
           // If BINDL_CURRENT_ONLY is set, we only download the binary for the
           // current platform and arch.
