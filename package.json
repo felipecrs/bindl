@@ -20,11 +20,11 @@
     "@xhmikosr/decompress-targz": "^8.1.0",
     "@xhmikosr/decompress-unzip": "^7.1.0",
     "@xhmikosr/downloader": "^15.2.0",
-    "chalk": "^5.4.1",
     "clipanion": "^4.0.0-rc.4",
     "cosmiconfig": "^9.0.0",
     "execa": "^9.6.0",
-    "listr2": "^9.0.0"
+    "listr2": "^9.0.0",
+    "picocolors": "^1.1.1"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.6",

@@ -40,7 +40,9 @@ describe("bindl", () => {
     const result = await execaCommand(
       `${binCommand} --config ${path.normalize(`${configDirectory}/bindl.config.js`)}`,
     );
-    expect(result.stdout).toContain(`downloading`);
+    expect(result.stdout).toContain(
+      `https://github.com/koalaman/shellcheck/releases/download`,
+    );
     expect(result.exitCode).toBe(0);
 
     expect(await fs.exists(`./binaries/linux/x64/shellcheck`)).toBeTruthy();
@@ -62,7 +64,9 @@ describe("bindl", () => {
     const result = await execaCommand(
       `${binCommand} --config ${path.normalize(`${configDirectory}/alternative-directory.bindl.config.js`)}`,
     );
-    expect(result.stdout).toContain(`downloading`);
+    expect(result.stdout).toContain(
+      `https://github.com/koalaman/shellcheck/releases/download`,
+    );
     expect(result.exitCode).toBe(0);
 
     expect(
@@ -74,7 +78,9 @@ describe("bindl", () => {
     const result = await execaCommand(
       `${binCommand} --config ${path.normalize(`${configDirectory}/remap-directory.bindl.config.js`)}`,
     );
-    expect(result.stdout).toContain(`downloading`);
+    expect(result.stdout).toContain(
+      `https://github.com/koalaman/shellcheck/releases/download`,
+    );
     expect(result.exitCode).toBe(0);
 
     expect(
@@ -87,7 +93,9 @@ describe("bindl", () => {
     const result = await execaCommand(
       `${binCommand} --config ${path.normalize(`${configDirectory}/individual-files.bindl.config.js`)}`,
     );
-    expect(result.stdout).toContain(`downloading`);
+    expect(result.stdout).toContain(
+      `https://github.com/mvdan/sh/releases/download`,
+    );
     expect(result.exitCode).toBe(0);
 
     expect(await fs.exists("./binaries/linux/x64/shfmt")).toBeTruthy();
@@ -107,7 +115,9 @@ describe("bindl", () => {
     const result = await execaCommand(`${binCommand} --config ${configPath}`, {
       env: { BINDL_CURRENT_ONLY: "true" },
     });
-    expect(result.stdout).toContain(`downloading`);
+    expect(result.stdout).toContain(
+      `https://github.com/koalaman/shellcheck/releases/download`,
+    );
     expect(result.exitCode).toBe(0);
 
     const currentPlatform = process.platform;
@@ -160,7 +170,9 @@ describe("bindl", () => {
     const result = await execaCommand(`${binCommand} --config ${configPath}`, {
       env: { npm_config_arch: "arm64" },
     });
-    expect(result.stdout).toContain(`downloading`);
+    expect(result.stdout).toContain(
+      `https://github.com/koalaman/shellcheck/releases/download`,
+    );
     expect(result.exitCode).toBe(0);
 
     const currentPlatform = process.platform;
