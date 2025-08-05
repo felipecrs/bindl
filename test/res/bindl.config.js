@@ -89,6 +89,10 @@ export default defineConfig({
       files: [{ source: `shellcheck.exe`, target: "shellcheck.exe" }],
       tests: [
         {
+          command: String.raw`.\shellcheck.exe --version`,
+          expectedOutputContains: `version: ${version}`,
+        },
+        {
           command: "./shellcheck.exe --version",
           expectedOutputContains: `version: ${version}`,
         },
@@ -100,6 +104,10 @@ export default defineConfig({
       url: `${urlPrefix}.zip`,
       // not using "files" to exercise a test
       tests: [
+        {
+          command: String.raw`.\shellcheck.exe --version`,
+          expectedOutputContains: `version: ${version}`,
+        },
         {
           command: "./shellcheck.exe --version",
           expectedOutputContains: `version: ${version}`,

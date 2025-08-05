@@ -20,7 +20,6 @@
     "@xhmikosr/decompress-targz": "^8.1.0",
     "@xhmikosr/decompress-unzip": "^7.1.0",
     "@xhmikosr/downloader": "^15.2.0",
-    "args-tokenizer": "^0.3.0",
     "clipanion": "^4.0.0-rc.4",
     "cosmiconfig": "^9.0.0",
     "listr2": "^9.0.0",
