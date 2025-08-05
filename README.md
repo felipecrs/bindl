@@ -12,9 +12,9 @@ Downloads binaries directly or from archives as defined in a config file.
 ## Usage
 
 ```sh-session
-$ npm install --global bindl
+$ npm install -D bindl
 
-$ bindl --help
+$ npx bindl --help
 Downloads binaries directly or from archives as defined in a config file
 
 ━━━ Usage ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -23,20 +23,24 @@ $ bindl
 
 ━━━ Options ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  -c,--config #0    Path to the config file
+  -c,--config #0    Path to the configuration file
 
 ━━━ Details ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-The config will be read from any valid config file in the current directory. The
-configuration file can be defined using all the extensions and names accepted by
-**cosmiconfig** such as `bindl.config.js`.
+Downloads binaries as defined in the configuration file.
+
+The configuration file can have any of the names and extensions accepted by
+cosmiconfig such as bindl.config.js.
+
+When no configuration file is specified, a valid configuration file will be
+searched in the current directory.
 
 ━━━ Examples ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Download binaries looking for the config file in the current directory
+Download binaries looking for the configuration file in the current directory
   $ bindl
 
-Download binaries looking for the config file at `./dir/bindl.config.js`
+Download binaries looking for the configuration file at ./dir/bindl.config.js
   $ bindl --config ./dir/bindl.config.js
 ```
 
