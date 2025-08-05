@@ -15,6 +15,10 @@
       "automerge": true
     },
     {
+      "matchDepTypes": ["devDependencies"],
+      "rangeStrategy": "bump"
+    },
+    {
       "matchDepTypes": ["dependencies"],
       "semanticCommitType": "build"
     },
