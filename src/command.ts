@@ -1,7 +1,6 @@
 import { chmod, rm } from "node:fs/promises";
 import path from "node:path";
 
-import { tokenizeArgs } from "args-tokenizer";
 import { Command, Option, UsageError } from "clipanion";
 import { cosmiconfig, CosmiconfigResult } from "cosmiconfig";
 import { Listr } from "listr2";
@@ -233,7 +232,9 @@ export class MainCommand extends Command {
 
           for (const test of binary.tests) {
             try {
-              const [command, ...commandArguments] = tokenizeArgs(test.command);
+              const [command, ...commandArguments] = parseCommandString(
+                test.command,
+              );
               const { stdout } = await spawn(command, commandArguments, {
                 cwd: outputDirectory,
               });
@@ -269,3 +270,33 @@ async function importPlugin(plugin: string) {
   const { default: importedPlugin } = await import(plugin);
   return importedPlugin();
 }
+
+// Stolen from https://github.com/sindresorhus/execa/blob/a31fe55782993f2483d30955a8799ab88e20687c/lib/methods/command.js#L18-L43
+// Refs https://github.com/sindresorhus/nano-spawn/issues/14#issuecomment-3156519442
+// Convert `command` string into an array of file or arguments to pass to $`${...fileOrCommandArguments}`
+export const parseCommandString = (command: string) => {
+  const SPACES_REGEXP = / +/g;
+
+  if (typeof command !== "string") {
+    throw new TypeError(`The command must be a string: ${String(command)}.`);
+  }
+
+  const trimmedCommand = command.trim();
+  if (trimmedCommand === "") {
+    return [];
+  }
+
+  const tokens: string[] = [];
+  for (const token of trimmedCommand.split(SPACES_REGEXP)) {
+    // Allow spaces to be escaped by a backslash if not meant as a delimiter
+    const previousToken = tokens.at(-1);
+    if (previousToken && previousToken.endsWith("\\")) {
+      // Merge previous token with current one
+      tokens[tokens.length - 1] = `${previousToken.slice(0, -1)} ${token}`;
+    } else {
+      tokens.push(token);
+    }
+  }
+
+  return tokens;
+};
