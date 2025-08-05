@@ -2,8 +2,8 @@ import { chmod, rm } from "node:fs/promises";
 import path from "node:path";
 
 import { tokenizeArgs } from "args-tokenizer";
-import { Command, Option } from "clipanion";
-import { cosmiconfig } from "cosmiconfig";
+import { Command, Option, UsageError } from "clipanion";
+import { cosmiconfig, CosmiconfigResult } from "cosmiconfig";
 import { Listr } from "listr2";
 import spawn from "nano-spawn";
 import pc from "picocolors";
@@ -16,21 +16,25 @@ import { description } from "./package.js";
 
 export class MainCommand extends Command {
   config = Option.String("-c,--config", {
-    description: "Path to the config file",
+    description: `Path to the ${pc.bold("configuration file")}`,
   });
 
   static usage = Command.Usage({
     description,
     details: `
-        The config will be read from any valid config file in the current directory. The configuration file can be defined using all the extensions and names accepted by **cosmiconfig** such as \`bindl.config.js\`.
+        Downloads binaries as defined in the ${pc.bold("configuration file")}.
+
+        The configuration file can have any of the names and extensions accepted by ${pc.bold("cosmiconfig")} such as ${pc.cyan("bindl.config.js")}.
+
+        When no configuration file is specified, a valid configuration file will be searched in the ${pc.bold("current directory")}.
       `,
     examples: [
       [
-        "Download binaries looking for the config file in the current directory",
+        `Download binaries looking for the configuration file in the ${pc.bold("current directory")}`,
         "$0",
       ],
       [
-        "Download binaries looking for the config file at `./dir/bindl.config.js`",
+        `Download binaries looking for the configuration file at ${pc.cyan("./dir/bindl.config.js")}`,
         "$0 --config ./dir/bindl.config.js",
       ],
     ],
@@ -39,8 +43,8 @@ export class MainCommand extends Command {
   async execute() {
     // Return early if BINDL_SKIP is set
     if (process.env.BINDL_SKIP === "true" || process.env.BINDL_SKIP === "1") {
-      this.context.stdout.write(
-        "Skipping download due to the BINDL_SKIP env var being set",
+      console.log(
+        `Skipping binaries download as ${pc.cyan("BINDL_SKIP")} is set`,
       );
       return;
     }
@@ -49,17 +53,29 @@ export class MainCommand extends Command {
       searchStrategy: "global",
     });
 
-    const result = this.config
-      ? await explorer.load(this.config)
-      : await explorer.search();
+    let result: CosmiconfigResult;
+    try {
+      result = this.config
+        ? await explorer.load(this.config)
+        : await explorer.search();
+    } catch (error) {
+      throw new UsageError(
+        `Unable to load configuration file: ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
 
     if (!result) {
-      throw new Error("Not able to load the configuration file.");
+      throw new UsageError("No configuration file found");
     }
 
     const config: BindlConfig = result.config;
 
-    const tasks = new Listr([], { concurrent: true });
+    const tasks = new Listr([], {
+      concurrent: true,
+      exitOnError: false,
+      collectErrors: "minimal",
+      rendererOptions: { collapseErrors: false },
+    });
 
     const plugins = [
       await importPlugin("@xhmikosr/decompress-tar"),
@@ -84,6 +100,8 @@ export class MainCommand extends Command {
       tasks.add({
         title: pc.blue(pc.underline(binary.url)),
         skip: () => {
+          const platformArch = pc.cyan(`${binary.platform}/${binary.arch}`);
+
           // If BINDL_CURRENT_ONLY is set, we only download the binary for the
           // current platform and arch.
           if (
@@ -91,11 +109,11 @@ export class MainCommand extends Command {
             process.env.BINDL_CURRENT_ONLY === "1"
           ) {
             if (process.platform !== binary.platform) {
-              return "BINDL_CURRENT_ONLY is set and current platform is different from the binary platform";
+              return `${platformArch} skipped as ${pc.cyan("BINDL_CURRENT_ONLY")} is set and ${pc.bold("platform")} is different`;
             }
 
             if (process.arch !== binary.arch) {
-              return "BINDL_CURRENT_ONLY is set and current arch is different from the binary arch";
+              return `${platformArch} skipped as ${pc.cyan("BINDL_CURRENT_ONLY")} is set and ${pc.bold("arch")} is different`;
             }
 
             return false;
@@ -104,13 +122,13 @@ export class MainCommand extends Command {
           // If npm_config_arch is set, we only download the binary for the
           // current platform and the arch set by npm_config_arch.
           if (process.env.npm_config_arch) {
-            if (process.env.npm_config_arch !== binary.arch) {
-              return "npm_config_arch is set to a different arch";
-            }
-
             // Check if current platform is the same as the binary platform
             if (process.platform !== binary.platform) {
-              return "npm_config_arch is set and current platform is different from the binary platform";
+              return `${platformArch} skipped as ${pc.cyan("npm_config_arch")} is set and ${pc.bold("platform")} is different`;
+            }
+
+            if (process.env.npm_config_arch !== binary.arch) {
+              return `${platformArch} skipped as ${pc.cyan("npm_config_arch")} is set and ${pc.bold("arch")} is different`;
             }
           }
 
@@ -124,8 +142,8 @@ export class MainCommand extends Command {
           );
 
           if (binary.type === "file" && binary.filename === undefined) {
-            throw new Error(
-              `Configuration error: 'filename' is required when type is 'file'.`,
+            throw new UsageError(
+              `Wrong configuration: ${pc.yellow("filename")} is required when type is ${pc.yellow("file")}`,
             );
           }
 
@@ -222,12 +240,12 @@ export class MainCommand extends Command {
 
               if (!stdout.includes(test.expectedOutputContains)) {
                 throw new Error(
-                  `Expected output to contain "${test.expectedOutputContains}", but got: ${stdout}`,
+                  `Expected output to contain ${pc.green(test.expectedOutputContains)}, got:\n${pc.red(stdout)}`,
                 );
               }
             } catch (error) {
               throw new Error(
-                `Test failed for command "${test.command}": ${error instanceof Error ? error.message : String(error)}`,
+                `Test ${pc.red("failed")} for command ${pc.yellow(test.command)}:\n${error instanceof Error ? error.message : String(error)}`,
               );
             }
           }
@@ -238,6 +256,9 @@ export class MainCommand extends Command {
     try {
       await rm(downloadDirectory, { force: true, recursive: true });
       await tasks.run();
+      if (tasks.errors.length > 0) {
+        return 1;
+      }
     } catch {
       return 1;
     }
