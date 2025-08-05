@@ -3,9 +3,8 @@ import { Command, Option } from "clipanion";
 import { cosmiconfig } from "cosmiconfig";
 import { execaCommand } from "execa";
 import { Listr } from "listr2";
-import { rimraf } from "rimraf";
 import path from "node:path";
-import { chmod } from "node:fs/promises";
+import { chmod, rm } from "node:fs/promises";
 
 // @ts-expect-error
 import download from "@xhmikosr/downloader";
@@ -234,7 +233,7 @@ export class MainCommand extends Command {
     }
 
     try {
-      await rimraf(downloadDirectory);
+      await rm(downloadDirectory, { force: true, recursive: true });
       await tasks.run();
     } catch {
       return 1;

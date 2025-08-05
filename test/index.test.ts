@@ -9,8 +9,8 @@ import {
   vi,
 } from "vitest";
 import { cd, fs, tmpdir } from "zx";
+import { rm } from "node:fs/promises";
 import path from "node:path";
-import { rimraf } from "rimraf";
 
 const repoDirectory = path.normalize(`${import.meta.dirname}/..`);
 const binCommand = `tsx ${path.normalize(`${repoDirectory}/src/index.ts`)}`;
@@ -33,7 +33,7 @@ describe("bindl", () => {
 
   afterEach(async () => {
     cd(repoDirectory);
-    await rimraf(temporaryDirectory);
+    await rm(temporaryDirectory, { force: true, recursive: true });
   });
 
   it("downloads shellcheck", async () => {
