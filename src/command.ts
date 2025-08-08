@@ -10,8 +10,8 @@ import pc from "picocolors";
 // @ts-expect-error
 import download from "@xhmikosr/downloader";
 
-import { type BindlConfig } from "./index.ts";
 import { description } from "./package.ts";
+import type { BindlConfig } from "./types.ts";
 
 export class MainCommand extends Command {
   config = Option.String("-c,--config", {
