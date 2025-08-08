@@ -1,9 +1,13 @@
 {
-  "extends": "@tsconfig/node20/tsconfig.json",
+  "extends": "@tsconfig/node22/tsconfig.json",
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "lib",
-    "declaration": true
+    "declaration": true,
+    // For running via node type stripping
+    "rewriteRelativeImportExtensions": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true
   },
   "include": ["src/**/*.ts"]
 }
