@@ -13,9 +13,9 @@ import { rm } from "node:fs/promises";
 import path from "node:path";
 
 const repoDirectory = path.normalize(`${import.meta.dirname}/..`);
-const binCommand = `tsx ${path.normalize(`${repoDirectory}/src/index.ts`)}`;
-const configDirectory = path.normalize(`${repoDirectory}/test/res`);
-const configPath = path.normalize(`${configDirectory}/bindl.config.js`);
+const binCommand = `node ${path.normalize(`${repoDirectory}/src/index.ts`)}`;
+const configsDirectory = path.normalize(`${repoDirectory}/test/res`);
+const mainConfigPath = path.normalize(`${configsDirectory}/bindl.config.js`);
 
 vi.setConfig({ testTimeout: 30_000 });
 
@@ -38,7 +38,7 @@ describe("bindl", () => {
 
   it("downloads shellcheck", async () => {
     const result = await execaCommand(
-      `${binCommand} --config ${path.normalize(`${configDirectory}/bindl.config.js`)}`,
+      `${binCommand} --config ${mainConfigPath}`,
     );
     expect(result.stdout).toContain(
       `https://github.com/koalaman/shellcheck/releases/download`,
@@ -62,7 +62,7 @@ describe("bindl", () => {
 
   it("downloads shellcheck to alternative directory", async () => {
     const result = await execaCommand(
-      `${binCommand} --config ${path.normalize(`${configDirectory}/alternative-directory.bindl.config.js`)}`,
+      `${binCommand} --config ${path.normalize(`${configsDirectory}/alternative-directory.bindl.config.js`)}`,
     );
     expect(result.stdout).toContain(
       `https://github.com/koalaman/shellcheck/releases/download`,
@@ -76,7 +76,7 @@ describe("bindl", () => {
 
   it("downloads shellcheck remapping directory", async () => {
     const result = await execaCommand(
-      `${binCommand} --config ${path.normalize(`${configDirectory}/remap-directory.bindl.config.js`)}`,
+      `${binCommand} --config ${path.normalize(`${configsDirectory}/remap-directory.bindl.config.js`)}`,
     );
     expect(result.stdout).toContain(
       `https://github.com/koalaman/shellcheck/releases/download`,
@@ -91,7 +91,7 @@ describe("bindl", () => {
 
   it("downloads shfmt as a single file", async () => {
     const result = await execaCommand(
-      `${binCommand} --config ${path.normalize(`${configDirectory}/individual-files.bindl.config.js`)}`,
+      `${binCommand} --config ${path.normalize(`${configsDirectory}/individual-files.bindl.config.js`)}`,
     );
     expect(result.stdout).toContain(
       `https://github.com/mvdan/sh/releases/download`,
@@ -112,9 +112,12 @@ describe("bindl", () => {
   });
 
   it("downloads only current binary when BINDL_CURRENT_ONLY is set", async () => {
-    const result = await execaCommand(`${binCommand} --config ${configPath}`, {
-      env: { BINDL_CURRENT_ONLY: "true" },
-    });
+    const result = await execaCommand(
+      `${binCommand} --config ${mainConfigPath}`,
+      {
+        env: { BINDL_CURRENT_ONLY: "true" },
+      },
+    );
     expect(result.stdout).toContain(
       `https://github.com/koalaman/shellcheck/releases/download`,
     );
@@ -167,9 +170,12 @@ describe("bindl", () => {
   });
 
   it("downloads only arm64 binary when npm_config_arch is arm64", async () => {
-    const result = await execaCommand(`${binCommand} --config ${configPath}`, {
-      env: { npm_config_arch: "arm64" },
-    });
+    const result = await execaCommand(
+      `${binCommand} --config ${mainConfigPath}`,
+      {
+        env: { npm_config_arch: "arm64" },
+      },
+    );
     expect(result.stdout).toContain(
       `https://github.com/koalaman/shellcheck/releases/download`,
     );
@@ -210,9 +216,12 @@ describe("bindl", () => {
   });
 
   it("downloads nothing when BINDL_SKIP is set", async () => {
-    const result = await execaCommand(`${binCommand} --config ${configPath}`, {
-      env: { BINDL_SKIP: "true" },
-    });
+    const result = await execaCommand(
+      `${binCommand} --config ${mainConfigPath}`,
+      {
+        env: { BINDL_SKIP: "true" },
+      },
+    );
     expect(result.stdout).toContain(`Skipping`);
     expect(result.exitCode).toBe(0);
 
