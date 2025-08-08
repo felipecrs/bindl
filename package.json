@@ -33,7 +33,6 @@
     "conventional-changelog-conventionalcommits": "^9.1.0",
     "eslint": "^9.32.0",
     "eslint-plugin-unicorn": "^60.0.0",
-    "execa": "^9.6.0",
     "installed-check": "^9.3.0",
     "neostandard": "^0.12.2",
     "prettier": "^3.6.2",
