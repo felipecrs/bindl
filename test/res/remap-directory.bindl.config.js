@@ -1,6 +1,6 @@
 // @ts-check
 
-import { defineConfig } from "../../src/index.js";
+import { defineConfig } from "../../src/index.ts";
 
 export default defineConfig({
   binaries: [

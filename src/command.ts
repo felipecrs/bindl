@@ -2,7 +2,7 @@ import { chmod, rm } from "node:fs/promises";
 import path from "node:path";
 
 import { Command, Option, UsageError } from "clipanion";
-import { cosmiconfig, CosmiconfigResult } from "cosmiconfig";
+import { cosmiconfig, type CosmiconfigResult } from "cosmiconfig";
 import { Listr } from "listr2";
 import spawn from "nano-spawn";
 import pc from "picocolors";
@@ -10,8 +10,8 @@ import pc from "picocolors";
 // @ts-expect-error
 import download from "@xhmikosr/downloader";
 
-import type { BindlConfig } from "./index.js";
-import { description } from "./package.js";
+import type { BindlConfig } from "./index.ts";
+import { description } from "./package.ts";
 
 export class MainCommand extends Command {
   config = Option.String("-c,--config", {
