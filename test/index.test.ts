@@ -1,4 +1,6 @@
-import { execaCommand } from "execa";
+import { rm } from "node:fs/promises";
+import path from "node:path";
+
 import {
   afterEach,
   beforeAll,
@@ -9,8 +11,8 @@ import {
   vi,
 } from "vitest";
 import { cd, fs, tmpdir } from "zx";
-import { rm } from "node:fs/promises";
-import path from "node:path";
+
+import { execCommand } from "../src/utilities.js";
 
 const repoDirectory = path.normalize(`${import.meta.dirname}/..`);
 const binCommand = `node ${path.normalize(`${repoDirectory}/src/index.ts`)}`;
@@ -37,13 +39,12 @@ describe("bindl", () => {
   });
 
   it("downloads shellcheck", async () => {
-    const result = await execaCommand(
+    const result = await execCommand(
       `${binCommand} --config ${mainConfigPath}`,
     );
     expect(result.stdout).toContain(
       `https://github.com/koalaman/shellcheck/releases/download`,
     );
-    expect(result.exitCode).toBe(0);
 
     expect(await fs.exists(`./binaries/linux/x64/shellcheck`)).toBeTruthy();
     expect(await fs.exists(`./binaries/linux/arm/shellcheck`)).toBeTruthy();
@@ -61,13 +62,12 @@ describe("bindl", () => {
   });
 
   it("downloads shellcheck to alternative directory", async () => {
-    const result = await execaCommand(
+    const result = await execCommand(
       `${binCommand} --config ${path.normalize(`${configsDirectory}/alternative-directory.bindl.config.js`)}`,
     );
     expect(result.stdout).toContain(
       `https://github.com/koalaman/shellcheck/releases/download`,
     );
-    expect(result.exitCode).toBe(0);
 
     expect(
       await fs.exists("./binaries-test/linux/x64/shellcheck"),
@@ -75,13 +75,12 @@ describe("bindl", () => {
   });
 
   it("downloads shellcheck remapping directory", async () => {
-    const result = await execaCommand(
+    const result = await execCommand(
       `${binCommand} --config ${path.normalize(`${configsDirectory}/remap-directory.bindl.config.js`)}`,
     );
     expect(result.stdout).toContain(
       `https://github.com/koalaman/shellcheck/releases/download`,
     );
-    expect(result.exitCode).toBe(0);
 
     expect(
       await fs.exists("./binaries/linux/x64/directory/shellcheck"),
@@ -90,13 +89,12 @@ describe("bindl", () => {
   });
 
   it("downloads shfmt as a single file", async () => {
-    const result = await execaCommand(
+    const result = await execCommand(
       `${binCommand} --config ${path.normalize(`${configsDirectory}/individual-files.bindl.config.js`)}`,
     );
     expect(result.stdout).toContain(
       `https://github.com/mvdan/sh/releases/download`,
     );
-    expect(result.exitCode).toBe(0);
 
     expect(await fs.exists("./binaries/linux/x64/shfmt")).toBeTruthy();
     expect(await fs.exists("./binaries/linux/x64/sha256sums.txt")).toBeTruthy();
@@ -112,7 +110,7 @@ describe("bindl", () => {
   });
 
   it("downloads only current binary when BINDL_CURRENT_ONLY is set", async () => {
-    const result = await execaCommand(
+    const result = await execCommand(
       `${binCommand} --config ${mainConfigPath}`,
       {
         env: { BINDL_CURRENT_ONLY: "true" },
@@ -121,7 +119,6 @@ describe("bindl", () => {
     expect(result.stdout).toContain(
       `https://github.com/koalaman/shellcheck/releases/download`,
     );
-    expect(result.exitCode).toBe(0);
 
     const currentPlatform = process.platform;
     const currentArch = process.arch;
@@ -170,7 +167,7 @@ describe("bindl", () => {
   });
 
   it("downloads only arm64 binary when npm_config_arch is arm64", async () => {
-    const result = await execaCommand(
+    const result = await execCommand(
       `${binCommand} --config ${mainConfigPath}`,
       {
         env: { npm_config_arch: "arm64" },
@@ -179,7 +176,6 @@ describe("bindl", () => {
     expect(result.stdout).toContain(
       `https://github.com/koalaman/shellcheck/releases/download`,
     );
-    expect(result.exitCode).toBe(0);
 
     const currentPlatform = process.platform;
     const expectedBinary =
@@ -216,14 +212,13 @@ describe("bindl", () => {
   });
 
   it("downloads nothing when BINDL_SKIP is set", async () => {
-    const result = await execaCommand(
+    const result = await execCommand(
       `${binCommand} --config ${mainConfigPath}`,
       {
         env: { BINDL_SKIP: "true" },
       },
     );
     expect(result.stdout).toContain(`Skipping`);
-    expect(result.exitCode).toBe(0);
 
     // No binaries should exist for any platform/arch combination
     expect(await fs.exists("./binaries/linux/x64/shellcheck")).toBeFalsy();
