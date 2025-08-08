@@ -1,6 +1,6 @@
 // @ts-check
 
-import { defineConfig } from "../../src/index.ts";
+import { defineConfig } from "../../../src/index.ts";
 
 const version = "0.10.0";
 const urlPrefix = `https://github.com/koalaman/shellcheck/releases/download/v${version}/shellcheck-v${version}`;
