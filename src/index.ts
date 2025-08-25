@@ -132,7 +132,6 @@ export function defineConfig(config: BindlConfig): BindlConfig {
 }
 
 // Only run the CLI if this file is being executed directly
-// @ts-expect-error @types/node not updated yet
 if (import.meta.main) {
   const cli = new Cli({
     binaryLabel: name,
