@@ -2,7 +2,7 @@
 
 import { defineConfig } from "../../../src/index.ts";
 
-const version = "0.10.0";
+const version = "0.11.0";
 const urlPrefix = `https://github.com/koalaman/shellcheck/releases/download/v${version}/shellcheck-v${version}`;
 
 export default defineConfig({
@@ -11,6 +11,8 @@ export default defineConfig({
       platform: "linux",
       arch: "x64",
       url: `${urlPrefix}.linux.x86_64.tar.xz`,
+      sha256:
+        "8c3be12b05d5c177a04c29e3c78ce89ac86f1595681cab149b65b97c4e227198",
       files: [
         {
           source: `shellcheck-v${version}/shellcheck`,

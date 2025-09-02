@@ -61,6 +61,8 @@ export default defineConfig({
       platform: "linux",
       arch: "x64",
       url: "https://example.com/tool.tar.gz",
+      // Optional: SHA256 hash to verify the downloaded archive
+      sha256: "abc123...",
       // Optional: extract or remap specific files
       files: [
         {
@@ -100,6 +102,8 @@ export default defineConfig({
       type: "file",
       // Required for single file downloads
       filename: "tool",
+      // Optional: SHA256 hash to verify the downloaded file
+      sha256: "def456...",
       // Optional: set executable permissions on non-Windows platforms (default: true)
       executable: true,
       // Optional: validate the downloaded binary

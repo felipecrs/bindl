@@ -8,10 +8,12 @@ import pc from "picocolors";
 
 // @ts-expect-error
 import download from "@xhmikosr/downloader";
+// @ts-expect-error
+import decompress from "@xhmikosr/decompress";
 
 import type { BindlConfig } from "./index.ts";
 import { description } from "./package.ts";
-import { execCommand } from "./utilities.ts";
+import { execCommand, computeSha256, randomString } from "./utilities.ts";
 
 export class MainCommand extends Command {
   config = Option.String("-c,--config", {
@@ -146,78 +148,88 @@ export class MainCommand extends Command {
             );
           }
 
-          const downloadOptions =
+          const fileName =
             binary.type === "file"
-              ? {
-                  filename: binary.filename,
-                }
-              : {
-                  extract: true,
-                  decompress: {
-                    strip: binary.stripComponents,
-                    filter: (file: any) => {
-                      if (binary.files) {
-                        return Boolean(
-                          binary.files.some((f) => {
-                            if (f.source === file.path) {
-                              return true;
-                            }
-                            // Compare by path. For example, if source is shellcheck/ and
-                            // file is shellcheck/LICENSE.txt, we want to return true.
-                            if (
-                              f.source.endsWith("/") &&
-                              file.path.startsWith(f.source)
-                            ) {
-                              return true;
-                            }
-                            return false;
-                          }),
-                        );
-                      }
+              ? binary.filename
+              : `archive-${randomString()}.tmp`;
 
-                      return true;
-                    },
-                    map: (file: any) => {
-                      if (binary.files) {
-                        let remapDirectory = false;
-                        const f = binary.files.find((f) => {
-                          if (f.source === file.path) {
-                            return true;
-                          }
-                          // Compare by path. For example, if source is shellcheck/ and
-                          // target is directory/, and file is shellcheck/LICENSE.txt, we
-                          // want to map it to directory/LICENSE.txt.
-                          if (
-                            f.source.endsWith("/") &&
-                            file.path.startsWith(f.source)
-                          ) {
-                            remapDirectory = true;
-                            return true;
-                          }
-                          return false;
-                        });
-                        if (f) {
-                          file.path = remapDirectory
-                            ? file.path.replace(f.source, f.target)
-                            : f.target;
-                        }
-                      }
+          await download(binary.url, outputDirectory, { filename: fileName });
 
-                      return file;
-                    },
-                    plugins,
-                  },
-                };
+          const filePath = path.join(outputDirectory, fileName);
 
-          await download(binary.url, outputDirectory, downloadOptions);
+          if (binary.sha256) {
+            const actualSha256 = await computeSha256(filePath);
+            if (actualSha256 !== binary.sha256.toLowerCase()) {
+              throw new Error(
+                `Expected SHA256 to be ${pc.green(binary.sha256)}, got ${pc.red(actualSha256)}`,
+              );
+            }
+          }
 
           if (binary.type === "file") {
-            const filePath = path.join(outputDirectory, binary.filename);
-
             // Set executable permissions on non-Windows platforms
             if ((binary.executable ?? true) && process.platform !== "win32") {
               await chmod(filePath, 0o755);
             }
+          } else {
+            // Extract the archive
+            await decompress(filePath, outputDirectory, {
+              strip: binary.stripComponents,
+              filter: (file: any) => {
+                if (binary.files) {
+                  return Boolean(
+                    binary.files.some((f) => {
+                      if (f.source === file.path) {
+                        return true;
+                      }
+                      // Compare by path. For example, if source is shellcheck/ and
+                      // file is shellcheck/LICENSE.txt, we want to return true.
+                      if (
+                        f.source.endsWith("/") &&
+                        file.path.startsWith(f.source)
+                      ) {
+                        return true;
+                      }
+                      return false;
+                    }),
+                  );
+                }
+
+                return true;
+              },
+              map: (file: any) => {
+                if (binary.files) {
+                  let remapDirectory = false;
+                  const f = binary.files.find((f) => {
+                    if (f.source === file.path) {
+                      return true;
+                    }
+                    // Compare by path. For example, if source is shellcheck/ and
+                    // target is directory/, and file is shellcheck/LICENSE.txt, we
+                    // want to map it to directory/LICENSE.txt.
+                    if (
+                      f.source.endsWith("/") &&
+                      file.path.startsWith(f.source)
+                    ) {
+                      remapDirectory = true;
+                      return true;
+                    }
+                    return false;
+                  });
+                  if (f) {
+                    file.path = remapDirectory
+                      ? file.path.replace(f.source, f.target)
+                      : f.target;
+                  }
+                }
+
+                return file;
+              },
+              plugins,
+            });
+
+            // Delete the archive after extraction
+            await rm(filePath);
           }
 
           // Only run tests for the current platform and arch

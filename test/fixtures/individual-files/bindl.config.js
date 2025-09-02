@@ -8,6 +8,8 @@ export default defineConfig({
       platform: "linux",
       arch: "x64",
       url: "https://github.com/mvdan/sh/releases/download/v3.12.0/shfmt_v3.12.0_linux_amd64",
+      sha256:
+        "d9fbb2a9c33d13f47e7618cf362a914d029d02a6df124064fff04fd688a745ea",
       type: "file",
       filename: "shfmt",
       tests: [
