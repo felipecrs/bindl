@@ -41,6 +41,10 @@ interface BindlBinaryBase {
    */
   url: string;
   /**
+   * Optional SHA256 hash to verify the downloaded file/archive
+   */
+  sha256?: string;
+  /**
    * Optional array of tests to run after extracting the binary.
    * Tests will only be executed if the current platform and architecture matches the binary's platform and architecture.
    */

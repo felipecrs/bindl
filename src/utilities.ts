@@ -1,8 +1,25 @@
 import spawn, { type Options } from "nano-spawn";
+import { createReadStream } from "node:fs";
+import { createHash, randomBytes } from "node:crypto";
 
 export async function execCommand(commandString: string, options?: Options) {
   const [command, ...commandArguments] = parseCommandString(commandString);
   return await spawn(command, commandArguments, options);
+}
+
+export function randomString(): string {
+  return randomBytes(8).toString("hex");
+}
+
+export async function computeSha256(filePath: string): Promise<string> {
+  const hash = createHash("sha256");
+  const stream = createReadStream(filePath);
+
+  for await (const chunk of stream) {
+    hash.update(chunk);
+  }
+
+  return hash.digest("hex");
 }
 
 // Stolen from https://github.com/sindresorhus/execa/blob/a31fe55782993f2483d30955a8799ab88e20687c/lib/methods/command.js#L18-L43

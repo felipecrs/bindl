@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@felipecrs/decompress-tarxz": "^5.0.4",
+    "@xhmikosr/decompress": "^10.2.0",
     "@xhmikosr/decompress-tar": "^8.1.0",
     "@xhmikosr/decompress-tarbz2": "^8.1.0",
     "@xhmikosr/decompress-targz": "^8.1.0",
