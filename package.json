@@ -37,7 +37,7 @@
     "installed-check": "^9.3.0",
     "neostandard": "^0.12.2",
     "prettier": "^3.6.2",
-    "semantic-release": "^25.0.1",
+    "semantic-release": "^25.0.2",
     "typescript": "^5.9.3",
     "vitest": "^4.0.8"
   },
