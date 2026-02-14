@@ -33,8 +33,8 @@
     "c8": "^10.1.3",
     "conventional-changelog-conventionalcommits": "^9.1.0",
     "eslint": "^9.39.2",
-    "eslint-plugin-unicorn": "^62.0.0",
-    "installed-check": "^9.3.0",
+    "eslint-plugin-unicorn": "^63.0.0",
+    "installed-check": "^10.0.0",
     "neostandard": "^0.12.2",
     "prettier": "^3.8.0",
     "semantic-release": "^25.0.2",
@@ -55,13 +55,13 @@
   "scripts": {
     "build": "node build.ts",
     "format": "prettier --write .",
-    "lint": "tsc --noEmit && eslint . && prettier --check . && installed-check --ignore-dev",
+    "lint": "tsc --noEmit && eslint . && prettier --check . && installed-check --ignoreDev",
     "prepack": "npm run build",
     "test": "c8 vitest --no-watch",
     "posttest": "npm run lint"
   },
   "volta": {
-    "node": "22.22.0",
-    "npm": "11.7.0"
+    "node": "24.13.1",
+    "npm": "11.10.0"
   }
 }
