@@ -32,7 +32,7 @@ jobs:
   release:
     needs: test
     runs-on: ubuntu-latest
-    if: github.repository == 'ffelipecrs/bindl' && startsWith(github.ref, 'refs/tags/v')
+    if: github.repository == 'felipecrs/bindl' && startsWith(github.ref, 'refs/tags/v')
 
     permissions:
       contents: write # to be able to publish a GitHub release
