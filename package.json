@@ -39,7 +39,7 @@
     "prettier": "^3.9.4",
     "semantic-release": "^25.0.5",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.10"
   },
   "engines": {
     "node": ">=22.18"
