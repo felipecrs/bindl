@@ -14,7 +14,7 @@
     "url": "https://github.com/felipecrs/bindl/issues"
   },
   "dependencies": {
-    "@felipecrs/decompress-tarxz": "^5.0.5",
+    "@felipecrs/decompress-tarxz": "^6.0.0",
     "@xhmikosr/decompress": "^11.1.0",
     "@xhmikosr/decompress-tar": "^9.0.0",
     "@xhmikosr/decompress-tarbz2": "^9.0.1",
