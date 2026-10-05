@@ -34,7 +34,7 @@
     "conventional-changelog-conventionalcommits": "^10.4.0",
     "eslint": "^9.39.5",
     "eslint-plugin-unicorn": "^63.0.0",
-    "installed-check": "^10.0.1",
+    "installed-check": "^11.0.0",
     "neostandard": "^0.13.0",
     "prettier": "^3.9.9",
     "semantic-release": "^25.0.9",
